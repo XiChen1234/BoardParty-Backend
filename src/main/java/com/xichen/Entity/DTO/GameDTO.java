@@ -14,6 +14,6 @@ public class GameDTO {
     private String description;
     private Integer minPlayer;
     private Integer maxPlayer;
-    private String images;
+    private List<String> images;
     private Integer star;
 }

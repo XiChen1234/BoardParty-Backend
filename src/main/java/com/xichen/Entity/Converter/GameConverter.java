@@ -4,10 +4,9 @@ import com.xichen.Entity.DO.Game;
 import com.xichen.Entity.DTO.GameDTO;
 import com.xichen.Entity.VO.GameVO;
 
-import java.util.Arrays;
+import com.alibaba.fastjson2.JSON;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class GameConverter {
     /**
@@ -29,10 +28,9 @@ public class GameConverter {
         gameDTO.setDescription(game.getDescription());
         gameDTO.setMinPlayer(game.getMinPlayer());
         gameDTO.setMaxPlayer(game.getMaxPlayer());
-        gameDTO.setImages(game.getImage());
         gameDTO.setStar(game.getStar());
 
-        gameDTO.setTags(parseTags(game.getTags()));
+        gameDTO.setImages(parseJsonString(game.getImages()));
 
         return gameDTO;
     }
@@ -55,7 +53,7 @@ public class GameConverter {
         gameVO.setDescription(gameDTO.getDescription());
         gameVO.setMinPlayer(gameDTO.getMinPlayer());
         gameVO.setMaxPlayer(gameDTO.getMaxPlayer());
-        gameVO.setImage(gameDTO.getImages());
+        gameVO.setImages(gameDTO.getImages());
         gameVO.setStar(gameDTO.getStar());
         return gameVO;
     }
@@ -63,16 +61,18 @@ public class GameConverter {
     // 以下为辅助方法
 
     /**
-     * 解析标签
-     * @param tags 标签字符串
-     * @return 标签列表
+     * 将JSON字符串解析为List，若为空则返回空列表
+     * @param json JSON字符串
+     * @return String列表
      */
-    private static List<String> parseTags(String tags) {
-        if(tags == null || tags.isEmpty()) {
+    public static List<String> parseJsonString(String json) {
+        if (json == null || json.isBlank()) {
             return Collections.emptyList();
         }
-        return Arrays.stream(tags.split("#"))
-                .filter(s -> !s.isEmpty())
-                .collect(Collectors.toList());
+        List<String> list = JSON.parseArray(json, String.class);
+        if(list == null) {
+            return Collections.emptyList();
+        }
+        return list;
     }
 }

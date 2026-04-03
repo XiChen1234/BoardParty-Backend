@@ -13,11 +13,10 @@ public class Game {
     private Long groupId;
     private String name;
     private String icon;
-    private String tags;
     private String description;
     private Integer minPlayer;
     private Integer maxPlayer;
-    private String image;
+    private String images;
     private Integer star;
     private Boolean enabled;
 }
