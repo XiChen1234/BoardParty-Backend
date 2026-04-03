@@ -1,4 +1,4 @@
-package com.xichen.Entity;
+package com.xichen.Entity.DO;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -18,7 +18,6 @@ public class Game {
     private Integer minPlayer;
     private Integer maxPlayer;
     private String image;
-    private String star;
+    private Integer star;
     private Boolean enabled;
-
 }

@@ -1,7 +1,7 @@
 package com.xichen.Mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.xichen.Entity.Game;
+import com.xichen.Entity.DO.Game;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

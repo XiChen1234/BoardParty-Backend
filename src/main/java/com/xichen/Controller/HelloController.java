@@ -1,7 +1,7 @@
 package com.xichen.Controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.xichen.Entity.Game;
+import com.xichen.Entity.DO.Game;
 import com.xichen.Mapper.GameMapper;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
