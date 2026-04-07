@@ -13,6 +13,7 @@ public class GameVO {
     private String description;
     private Integer minPlayer;
     private Integer maxPlayer;
+    private Integer duration;
     private List<String> images;
     private int star;
 }

@@ -28,6 +28,10 @@ public class GameServiceImpl implements GameService {
     @Resource
     private TagMapper tagMapper;
 
+    /**
+     * 获取所有游戏信息（已启用）
+     * @return 游戏列表
+     */
     @Override
     public List<GameDTO> getAllGames() {
         // 查询所有启用的游戏信息

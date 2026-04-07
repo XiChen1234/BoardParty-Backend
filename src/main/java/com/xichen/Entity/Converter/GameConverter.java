@@ -28,6 +28,7 @@ public class GameConverter {
         gameDTO.setDescription(game.getDescription());
         gameDTO.setMinPlayer(game.getMinPlayer());
         gameDTO.setMaxPlayer(game.getMaxPlayer());
+        gameDTO.setDuration(game.getDuration());
         gameDTO.setStar(game.getStar());
 
         gameDTO.setImages(parseJsonString(game.getImages()));
@@ -53,6 +54,7 @@ public class GameConverter {
         gameVO.setDescription(gameDTO.getDescription());
         gameVO.setMinPlayer(gameDTO.getMinPlayer());
         gameVO.setMaxPlayer(gameDTO.getMaxPlayer());
+        gameVO.setDuration(gameDTO.getDuration());
         gameVO.setImages(gameDTO.getImages());
         gameVO.setStar(gameDTO.getStar());
         return gameVO;

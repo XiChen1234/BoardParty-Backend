@@ -16,6 +16,7 @@ public class Game {
     private String description;
     private Integer minPlayer;
     private Integer maxPlayer;
+    private Integer duration;
     private String images;
     private Integer star;
     private Boolean enabled;
