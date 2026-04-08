@@ -19,31 +19,37 @@ jobs:
           java-version: 21
 
       - name: 构建jar包
-        run:  mvn clean package
+        run: mvn clean package
 
       - name: 添加服务器主机密钥到known_hosts
+        env:
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan -H "$SERVER_HOST" >> ~/.ssh/known_hosts
 
       - name: 部署到服务器
         env:
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
           SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
         run: |
           # 设置SSH
           mkdir -p ~/.ssh
           echo "$SSH_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
+
+          # 确保远程主机在known_hosts
+          ssh-keyscan -H "$SERVER_HOST" >> ~/.ssh/known_hosts
 
           # 同步jar文件
           rsync -avz -e "ssh -i ~/.ssh/id_rsa" \
           target/*.jar \
-          ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/opt/board-party/
+          "$SERVER_USER@$SERVER_HOST:/opt/board-party/"
 
           # 远程重启SpringBoot
-          ssh -i ~/.ssh/id_rsa ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
+          ssh -i ~/.ssh/id_rsa "$SERVER_USER@$SERVER_HOST" << 'EOF'
             pkill -f board-party || true
-            cd /opt/app/board-party
+            cd /opt/board-party
             nohup java -jar *.jar > app.log 2>&1 &
           EOF
