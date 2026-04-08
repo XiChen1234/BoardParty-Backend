@@ -48,6 +48,6 @@ jobs:
 
           # 远程重启 Spring Boot 服务
           ssh -i ~/.ssh/id_rsa "$SERVER_USER@$SERVER_HOST" << 'EOF'
-                pkill -f board-party || true
+                lsof -ti:8080 | xargs kill -9 2>/dev/null || true
                 ~/board-party/backend/start.sh
           EOF
