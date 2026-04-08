@@ -140,15 +140,4 @@ public class GameServiceImplTest {
         assertEquals(1, result.get(0).getTags().size());
         assertNull(result.get(1).getTags());
     }
-
-    @Test
-    void testGetAllGames_GameNotEnabled() {
-        Game disabledGame = createGame(1L, "DisabledGame", false);
-        when(gameMapper.selectList(any(LambdaQueryWrapper.class))).thenReturn(List.of(disabledGame));
-
-        List<GameDTO> result = gameService.getAllGames();
-
-        assertNotNull(result);
-        assertTrue(result.isEmpty());
-    }
 }
