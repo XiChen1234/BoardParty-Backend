@@ -1,0 +1,49 @@
+name: 部署后端项目
+
+on:
+  push:
+    branches: [ master ] # 指定触发分支，当代码推送到 main 分支时触发工作流
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest # 工作流在最新的Ubuntu系统环境中运行
+
+    steps:
+      - name: 拉取项目代码
+        uses: actions/checkout@v3
+
+      - name: 设置Java环境
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: 构建jar包
+        run:  mvn clean package
+
+      - name: 添加服务器主机密钥到known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
+
+      - name: 部署到服务器
+        env:
+          SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
+        run: |
+          # 设置SSH
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
+
+          # 同步jar文件
+          rsync -avz -e "ssh -i ~/.ssh/id_rsa" \
+          target/*.jar \
+          ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/opt/board-party/
+
+          # 远程重启SpringBoot
+          ssh -i ~/.ssh/id_rsa ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
+            pkill -f board-party || true
+            cd /opt/app/board-party
+            nohup java -jar *.jar > app.log 2>&1 &
+          EOF
