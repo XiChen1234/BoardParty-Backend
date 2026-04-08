@@ -41,14 +41,14 @@ jobs:
           ssh-keyscan -H "$SERVER_HOST" >> ~/.ssh/known_hosts
 
           # 确保远程部署目录存在（普通用户目录）
-          ssh -i ~/.ssh/id_rsa "$SERVER_USER@$SERVER_HOST" "mkdir -p ~/board-party"
+          ssh -i ~/.ssh/id_rsa "$SERVER_USER@$SERVER_HOST" "mkdir -p ~/board-party/backend"
 
           # 同步 jar 文件到用户目录
-          rsync -avz -e "ssh -i ~/.ssh/id_rsa" target/*.jar "$SERVER_USER@$SERVER_HOST":~/board-party/
+          rsync -avz -e "ssh -i ~/.ssh/id_rsa" target/*.jar "$SERVER_USER@$SERVER_HOST":~/board-party/backend/
 
           # 远程重启 Spring Boot 服务
           ssh -i ~/.ssh/id_rsa "$SERVER_USER@$SERVER_HOST" << 'EOF'
             pkill -f board-party || true
-            cd ~/board-party
+            cd ~/board-party/backend
             nohup java -jar *.jar > app.log 2>&1 &
           EOF
