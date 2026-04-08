@@ -48,7 +48,6 @@ jobs:
 
           # 远程重启 Spring Boot 服务
           ssh -i ~/.ssh/id_rsa "$SERVER_USER@$SERVER_HOST" << 'EOF'
-            pkill -f board-party || true
-            cd ~/board-party/backend
-            nohup java -jar *.jar > app.log 2>&1 &
+                pkill -f board-party || true
+                ~/board-party/backend/start.sh
           EOF
