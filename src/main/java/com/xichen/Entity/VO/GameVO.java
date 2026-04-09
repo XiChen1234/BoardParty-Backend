@@ -7,6 +7,7 @@ import java.util.List;
 
 @Data
 public class GameVO {
+    private Long id;
     private String name;
     private String icon;
     private List<Tag> tags;

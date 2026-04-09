@@ -47,7 +47,7 @@ public class GameConverter {
         }
 
         GameVO gameVO = new GameVO();
-
+        gameVO.setId(gameDTO.getId());
         gameVO.setName(gameDTO.getName());
         gameVO.setIcon(gameDTO.getIcon());
         gameVO.setTags(gameDTO.getTags());
