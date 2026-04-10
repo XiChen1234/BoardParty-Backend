@@ -2,7 +2,7 @@ package com.xichen.Controller;
 
 import com.xichen.Common.CommonResponse;
 import com.xichen.Entity.Converter.GameConverter;
-import com.xichen.Entity.DTO.GameDTO;
+import com.xichen.Entity.DTO.GameQueryDTO;
 import com.xichen.Entity.VO.GameVO;
 import com.xichen.Service.GameService;
 import jakarta.annotation.Resource;
@@ -21,8 +21,8 @@ public class GameController {
 
     @GetMapping("")
     public CommonResponse<List<GameVO>> getAllGames() {
-        List<GameDTO> gameDTOList = gameService.getAllGames();
-        List<GameVO> gameVOList = gameDTOList.stream()
+        List<GameQueryDTO> gameQueryDTOList = gameService.getAllGames();
+        List<GameVO> gameVOList = gameQueryDTOList.stream()
                 .map(GameConverter::convertToVO)
                 .toList();
         return CommonResponse.success(gameVOList);

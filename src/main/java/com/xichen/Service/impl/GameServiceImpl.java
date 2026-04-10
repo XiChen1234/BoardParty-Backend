@@ -5,7 +5,7 @@ import com.xichen.Entity.Converter.GameConverter;
 import com.xichen.Entity.DO.Game;
 import com.xichen.Entity.DO.GameTag;
 import com.xichen.Entity.DO.Tag;
-import com.xichen.Entity.DTO.GameDTO;
+import com.xichen.Entity.DTO.GameQueryDTO;
 import com.xichen.Mapper.GameMapper;
 import com.xichen.Mapper.GameTagMapper;
 import com.xichen.Mapper.TagMapper;
@@ -33,7 +33,7 @@ public class GameServiceImpl implements GameService {
      * @return 游戏列表
      */
     @Override
-    public List<GameDTO> getAllGames() {
+    public List<GameQueryDTO> getAllGames() {
         // 查询所有启用的游戏信息
         LambdaQueryWrapper<Game> gameWrapper = new LambdaQueryWrapper<>();
         gameWrapper.eq(Game::getEnabled, true);
@@ -66,9 +66,9 @@ public class GameServiceImpl implements GameService {
         Map<Long, Tag> tagMap = tagList.stream().collect(Collectors.toMap(Tag::getId, t -> t));
 
         // 构建DTO列表
-        List<GameDTO> gameDTOList = new ArrayList<>();
+        List<GameQueryDTO> gameQueryDTOList = new ArrayList<>();
         for (Game game : gameList) {
-            GameDTO dto = GameConverter.convertToDTO(game);
+            GameQueryDTO dto = GameConverter.convertToDTO(game);
             List<Long> tagIdList = gameIdAndTagIdListMap.get(game.getId());
             if (tagIdList != null && !tagIdList.isEmpty()) {
                 List<Tag> tags = tagIdList.stream()
@@ -76,8 +76,8 @@ public class GameServiceImpl implements GameService {
                         .toList();
                 dto.setTags(tags);
             }
-            gameDTOList.add(dto);
+            gameQueryDTOList.add(dto);
         }
-        return gameDTOList;
+        return gameQueryDTOList;
     }
 }

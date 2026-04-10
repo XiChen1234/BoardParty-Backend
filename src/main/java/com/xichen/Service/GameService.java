@@ -1,9 +1,9 @@
 package com.xichen.Service;
 
-import com.xichen.Entity.DTO.GameDTO;
+import com.xichen.Entity.DTO.GameQueryDTO;
 
 import java.util.List;
 
 public interface GameService {
-    List<GameDTO> getAllGames();
+    List<GameQueryDTO> getAllGames();
 }
