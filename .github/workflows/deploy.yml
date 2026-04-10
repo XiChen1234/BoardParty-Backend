@@ -46,8 +46,6 @@ jobs:
           # 同步 jar 文件到用户目录
           rsync -avz -e "ssh -i ~/.ssh/id_rsa" target/*.jar "$SERVER_USER@$SERVER_HOST":~/board-party/backend/
 
-          # 远程重启 Spring Boot 服务
-          ssh -i ~/.ssh/id_rsa "$SERVER_USER@$SERVER_HOST" << 'EOF'
-                lsof -ti:8080 | xargs kill -9 2>/dev/null || true
-                ~/board-party/backend/start.sh
-          EOF
+          # 远程重启 Spring Boot 服务 - 先停止旧进程，再以后台方式启动
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no "$SERVER_USER@$SERVER_HOST" \
+            "cd ~/board-party/backend && lsof -ti:8080 | xargs kill -9 2>/dev/null; nohup java -jar *.jar --spring.profiles.active=prod > app.log 2>&1 &"
