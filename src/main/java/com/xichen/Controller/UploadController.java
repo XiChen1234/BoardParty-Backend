@@ -2,6 +2,7 @@ package com.xichen.Controller;
 
 import com.xichen.Common.CommonResponse;
 import com.xichen.Common.ResponseCode;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,7 +16,8 @@ import java.util.*;
 @RequestMapping("/upload")
 public class UploadController {
     // 文件上传目录
-    private static final String UPLOAD_DIR = "C:\\Document\\Project\\BoardProject\\BoardParty-Images\\board-party";
+    @Value("${file.upload-path}")
+    private String UPLOAD_DIR;
     // 图片后缀集合
     private static final Set<String> EXTENSION_SET = new HashSet<>(Arrays.asList(
             ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp", ".svg", ".ico", ".tiff", ".tif"

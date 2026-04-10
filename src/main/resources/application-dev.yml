@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/board_party?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: ${DB_USERNAME:root} # 示例账号
+    password: ${DB_PASSWORD:123456} # 示例密码
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+file:
+  upload-path: C:/Document/Project/BoardProject/BoardParty-Images/board-party
