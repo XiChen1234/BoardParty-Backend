@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommonResponse<T> {
-    private ResponseCode code;
+    private Integer code;
     private String message;
     private T data;
 
@@ -18,7 +18,7 @@ public class CommonResponse<T> {
      * @param <T> 响应的数据类型
      */
     public static <T> CommonResponse<T> success() {
-        return new CommonResponse<>(ResponseCode.SUCCESS, null, null);
+        return new CommonResponse<>(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessage(), null);
     }
 
     /**
@@ -28,7 +28,7 @@ public class CommonResponse<T> {
      * @param <T> 响应的数据类型
      */
     public static <T> CommonResponse<T> success(T data) {
-        return new CommonResponse<>(ResponseCode.SUCCESS, null, data);
+        return new CommonResponse<>(ResponseCode.SUCCESS.getCode(), null, data);
     }
 
     /**
@@ -38,7 +38,7 @@ public class CommonResponse<T> {
      * @param <T> 响应的数据类型
      */
     public static <T> CommonResponse<T> fail(ResponseCode code) {
-        return new CommonResponse<>(code, code.getMessage(), null);
+        return new CommonResponse<>(code.getCode(), code.getMessage(), null);
     }
 
     /**
@@ -49,6 +49,6 @@ public class CommonResponse<T> {
      * @param <T> 响应的数据类型
      */
     public static <T> CommonResponse<T> fail(ResponseCode code, String message) {
-        return new CommonResponse<>(code, message, null);
+        return new CommonResponse<>(code.getCode(), message, null);
     }
 }
