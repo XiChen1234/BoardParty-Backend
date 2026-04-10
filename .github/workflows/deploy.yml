@@ -41,13 +41,8 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H "$SERVER_HOST" >> ~/.ssh/known_hosts
 
-          mkdir -p ~/board-party/backend
-
           # 同步 jar 文件到用户目录
           rsync -avz -e "ssh -i ~/.ssh/id_rsa" target/*.jar "$SERVER_USER@$SERVER_HOST":~/board-party/backend/
-
-          # 同步 start.sh 脚本
-          rsync -avz -e "ssh -i ~/.ssh/id_rsa" .github/workflows/start.sh "$SERVER_USER@$SERVER_HOST":~/board-party/backend/
 
           # 远程重启 Spring Boot 服务
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no "$SERVER_USER@$SERVER_HOST" \
