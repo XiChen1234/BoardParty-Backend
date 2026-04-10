@@ -33,6 +33,8 @@ jobs:
           SERVER_HOST: ${{ secrets.SERVER_HOST }}
           SERVER_USER: ${{ secrets.SERVER_USER }}
           SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: |
           mkdir -p ~/.ssh
           echo "$SSH_KEY" > ~/.ssh/id_rsa
@@ -44,6 +46,9 @@ jobs:
           # 同步 jar 文件到用户目录
           rsync -avz -e "ssh -i ~/.ssh/id_rsa" target/*.jar "$SERVER_USER@$SERVER_HOST":~/board-party/backend/
 
-          # 远程重启 Spring Boot 服务 - 先停止旧进程，再以后台方式启动
+          # 同步 start.sh 脚本
+          rsync -avz -e "ssh -i ~/.ssh/id_rsa" .github/workflows/start.sh "$SERVER_USER@$SERVER_HOST":~/board-party/backend/
+
+          # 远程重启 Spring Boot 服务
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no "$SERVER_USER@$SERVER_HOST" \
-            "cd ~/board-party/backend && lsof -ti:8080 | xargs kill -9 2>/dev/null; nohup java -jar *.jar --spring.profiles.active=prod > app.log 2>&1 &"
+            "cd ~/board-party/backend && chmod +x start.sh && ./start.sh"
