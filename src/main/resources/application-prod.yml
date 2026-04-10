@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/board_party?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:123456}
+    username: ${DB_USERNAME:root2}
+    password: ${DB_PASSWORD:1234567}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 file:
