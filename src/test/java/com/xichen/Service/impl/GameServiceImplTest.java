@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.xichen.Entity.DO.Game;
 import com.xichen.Entity.DO.GameTag;
 import com.xichen.Entity.DO.Tag;
-import com.xichen.Entity.DTO.GameDTO;
+import com.xichen.Entity.DTO.GameQueryDTO;
 import com.xichen.Mapper.GameMapper;
 import com.xichen.Mapper.GameTagMapper;
 import com.xichen.Mapper.TagMapper;
@@ -62,7 +62,7 @@ public class GameServiceImplTest {
     void testGetAllGames_ReturnsEmptyListWhenNoGames() {
         when(gameMapper.selectList(any(LambdaQueryWrapper.class))).thenReturn(Collections.emptyList());
 
-        List<GameDTO> result = gameService.getAllGames();
+        List<GameQueryDTO> result = gameService.getAllGames();
 
         assertNotNull(result);
         assertTrue(result.isEmpty());
@@ -72,7 +72,7 @@ public class GameServiceImplTest {
     void testGetAllGames_ReturnsEmptyListWhenGamesIsNull() {
         when(gameMapper.selectList(any(LambdaQueryWrapper.class))).thenReturn(null);
 
-        List<GameDTO> result = gameService.getAllGames();
+        List<GameQueryDTO> result = gameService.getAllGames();
 
         assertNotNull(result);
         assertTrue(result.isEmpty());
@@ -84,7 +84,7 @@ public class GameServiceImplTest {
         when(gameMapper.selectList(any(LambdaQueryWrapper.class))).thenReturn(games);
         when(gameTagMapper.selectList(any(LambdaQueryWrapper.class))).thenReturn(Collections.emptyList());
 
-        List<GameDTO> result = gameService.getAllGames();
+        List<GameQueryDTO> result = gameService.getAllGames();
 
         assertNotNull(result);
         assertEquals(1, result.size());
@@ -108,7 +108,7 @@ public class GameServiceImplTest {
         when(gameTagMapper.selectList(any(LambdaQueryWrapper.class))).thenReturn(List.of(gameTag1, gameTag2));
         when(tagMapper.selectList(any(LambdaQueryWrapper.class))).thenReturn(List.of(tag1, tag2));
 
-        List<GameDTO> result = gameService.getAllGames();
+        List<GameQueryDTO> result = gameService.getAllGames();
 
         assertNotNull(result);
         assertEquals(1, result.size());
@@ -131,7 +131,7 @@ public class GameServiceImplTest {
         when(gameTagMapper.selectList(any(LambdaQueryWrapper.class))).thenReturn(List.of(gameTag1));
         when(tagMapper.selectList(any(LambdaQueryWrapper.class))).thenReturn(List.of(tag1));
 
-        List<GameDTO> result = gameService.getAllGames();
+        List<GameQueryDTO> result = gameService.getAllGames();
 
         assertNotNull(result);
         assertEquals(2, result.size());
