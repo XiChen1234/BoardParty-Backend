@@ -34,14 +34,21 @@ jobs:
           SERVER_USER: ${{ secrets.SERVER_USER }}
           SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
         run: |
-          # 设置SSH
           mkdir -p ~/.ssh
           echo "$SSH_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H "$SERVER_HOST" >> ~/.ssh/known_hosts
 
-          # 确保远程部署目录存在（普通用户目录）
-          ssh -i ~/.ssh/id_rsa "$SERVER_USER@$SERVER_HOST" "mkdir -p ~/board-party/backend"
+          echo "=== 调试：检查私钥文件是否正确写入 ==="
+          head -1 ~/.ssh/id_rsa
+          tail -1 ~/.ssh/id_rsa
+          echo "=== 私钥长度 ==="
+          wc -c ~/.ssh/id_rsa
+
+          echo "=== 尝试SSH连接测试 ==="
+          ssh -v -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no "$SERVER_USER@$SERVER_HOST" "echo 'SSH连接成功'"
+
+          mkdir -p ~/board-party/backend
 
           # 同步 jar 文件到用户目录
           rsync -avz -e "ssh -i ~/.ssh/id_rsa" target/*.jar "$SERVER_USER@$SERVER_HOST":~/board-party/backend/
