@@ -18,6 +18,9 @@ public class UploadController {
     // 文件上传目录
     @Value("${file.upload-path}")
     private String UPLOAD_DIR;
+    // 图床前缀
+    @Value("${file.image-prefix}")
+    private String PREFIX;
     // 图片后缀集合
     private static final Set<String> EXTENSION_SET = new HashSet<>(Arrays.asList(".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp", ".svg", ".ico", ".tiff", ".tif"));
 
@@ -71,7 +74,7 @@ public class UploadController {
             return CommonResponse.fail(ResponseCode.ERROR, "文件上传失败");
         }
 
-        String returnFilePath = "http://localhost:8080/board-party/" + newFilename;
+        String returnFilePath = PREFIX + newFilename;
         return CommonResponse.success(returnFilePath);
     }
 }
