@@ -9,6 +9,8 @@ public enum ResponseCode {
     ERROR(500, "服务器错误"),
     // 其他错误码定义
 
+    VALIDATION_FAILED(1401, "参数验证失败"),
+    INFO_EXIST(1402, "信息已存在"),
     ;
 
     private final int code;

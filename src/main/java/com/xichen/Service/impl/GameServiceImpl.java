@@ -1,22 +1,23 @@
 package com.xichen.Service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.xichen.Common.ResponseCode;
 import com.xichen.Entity.Converter.GameConverter;
 import com.xichen.Entity.DO.Game;
 import com.xichen.Entity.DO.GameTag;
 import com.xichen.Entity.DO.Tag;
 import com.xichen.Entity.DTO.GameQueryDTO;
+import com.xichen.Entity.Request.GameCreateRequest;
+import com.xichen.Exception.CommonException;
 import com.xichen.Mapper.GameMapper;
 import com.xichen.Mapper.GameTagMapper;
 import com.xichen.Mapper.TagMapper;
 import com.xichen.Service.GameService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -79,5 +80,66 @@ public class GameServiceImpl implements GameService {
             gameQueryDTOList.add(dto);
         }
         return gameQueryDTOList;
+    }
+
+    /**
+     * 创建新桌游
+     * @return 创建的桌游Id
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Long createGame(GameCreateRequest request) {
+        // 1. 校验名称是否重复
+        LambdaQueryWrapper<Game> gameWrapper = new LambdaQueryWrapper<>();
+        gameWrapper.eq(Game::getName, request.getName());
+        if (gameMapper.selectOne(gameWrapper) != null) {
+            throw new CommonException(ResponseCode.INFO_EXIST, "桌游名称已存在");
+        }
+
+        // 2. 创建桌游
+        Game game = GameConverter.convertToDO(request);
+        gameMapper.insert(game);
+        Long gameId = game.getId(); // 获取创建的桌游Id
+
+        // 3. 处理标签
+        List<String> tagNames = request.getTagNames();
+        if (tagNames != null && !tagNames.isEmpty()) {
+            // 去重
+            tagNames = new ArrayList<>(new LinkedHashSet<>(tagNames));
+            // 批量获取已存在的标签
+            LambdaQueryWrapper<Tag> tagWrapper = new LambdaQueryWrapper<>();
+            tagWrapper.in(Tag::getName, tagNames);
+            List<Tag> existTagList = tagMapper.selectList(tagWrapper);
+            // 构建已存在的标签名称和Id的映射
+            Map<String, Long> tagNameAndIdMap = existTagList.stream()
+                    .collect(Collectors.toMap(Tag::getName, Tag::getId));
+            List<Tag> newTagList = new ArrayList<>();
+            for (String tagName : tagNames) {
+                if (!tagNameAndIdMap.containsKey(tagName)) {
+                    Tag tag = new Tag();
+                    tag.setName(tagName);
+                    newTagList.add(tag);
+                }
+            }
+
+            // 批量插入标签
+            if (!newTagList.isEmpty()) {
+                tagMapper.insert(newTagList);
+                tagNameAndIdMap.putAll(newTagList.stream()
+                        .collect(Collectors.toMap(Tag::getName, Tag::getId)));
+            }
+
+            // 批量插入游戏-标签关系
+            List<GameTag> gameTagList = new ArrayList<>();
+            for (String tagName : tagNames) {
+                GameTag gameTag = new GameTag();
+                gameTag.setGameId(gameId);
+                gameTag.setTagId(tagNameAndIdMap.get(tagName));
+                gameTagList.add(gameTag);
+            }
+            gameTagMapper.insert(gameTagList);
+        }
+
+        return gameId;
     }
 }

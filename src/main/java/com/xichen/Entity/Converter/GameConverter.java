@@ -2,6 +2,7 @@ package com.xichen.Entity.Converter;
 
 import com.xichen.Entity.DO.Game;
 import com.xichen.Entity.DTO.GameQueryDTO;
+import com.xichen.Entity.Request.GameCreateRequest;
 import com.xichen.Entity.VO.GameVO;
 
 import com.alibaba.fastjson2.JSON;
@@ -60,6 +61,29 @@ public class GameConverter {
         return gameVO;
     }
 
+    /**
+     * 请求转换为DO
+     * @param request 桌游创建请求
+     * @return 数据对象
+     */
+    public static Game convertToDO(GameCreateRequest request) {
+        if (request == null) {
+            return null;
+        }
+
+        Game game = new Game();
+        game.setName(request.getName());
+        game.setIcon(request.getIcon());
+        game.setDescription(request.getDescription());
+        game.setImages(parseListString(request.getImages()));
+        game.setMinPlayer(request.getMinPlayer());
+        game.setMaxPlayer(request.getMaxPlayer());
+        game.setDuration(request.getDuration());
+        game.setStar(request.getStar());
+        game.setEnabled(true);
+        return game;
+    }
+
     // 以下为辅助方法
 
     /**
@@ -76,5 +100,18 @@ public class GameConverter {
             return Collections.emptyList();
         }
         return list;
+    }
+
+    /**
+     * 将ListString转换为JSON字符串
+     * List为空时返回"[]"
+     * @param list String列表
+     * @return JSON字符串
+     */
+    public static String parseListString(List<String> list) {
+        if (list == null || list.isEmpty()) {
+            return "[]";
+        }
+        return JSON.toJSONString(list);
     }
 }
