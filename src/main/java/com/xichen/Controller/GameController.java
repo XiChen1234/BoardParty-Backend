@@ -17,7 +17,11 @@ public class GameController {
     @Resource
     private GameService gameService;
 
-
+    /**
+     * 获取所有桌游信息
+     *
+     * @return 桌游列表
+     */
     @GetMapping("")
     public CommonResponse<List<GameVO>> getAllGames() {
         List<GameQueryDTO> gameQueryDTOList = gameService.getAllGames();
@@ -29,6 +33,7 @@ public class GameController {
 
     /**
      * 创建一个新桌游
+     *
      * @param request 创建桌游请求
      * @return 创建的新桌游ID
      */

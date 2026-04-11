@@ -6,17 +6,19 @@ import com.xichen.Entity.Request.GameCreateRequest;
 import com.xichen.Entity.VO.GameVO;
 
 import com.alibaba.fastjson2.JSON;
+
 import java.util.Collections;
 import java.util.List;
 
 public class GameConverter {
     /**
      * DO转换为DTO
+     *
      * @param game 数据对象
      * @return DTO对象
      */
     public static GameQueryDTO convertToDTO(Game game) {
-        if(game == null) {
+        if (game == null) {
             return null;
         }
 
@@ -39,11 +41,12 @@ public class GameConverter {
 
     /**
      * DTO转换为VO
+     *
      * @param gameQueryDTO 数据传输对象
      * @return 视图对象
      */
     public static GameVO convertToVO(GameQueryDTO gameQueryDTO) {
-        if(gameQueryDTO == null) {
+        if (gameQueryDTO == null) {
             return null;
         }
 
@@ -63,6 +66,7 @@ public class GameConverter {
 
     /**
      * 请求转换为DO
+     *
      * @param request 桌游创建请求
      * @return 数据对象
      */
@@ -88,6 +92,7 @@ public class GameConverter {
 
     /**
      * 将JSON字符串解析为List，若为空则返回空列表
+     *
      * @param json JSON字符串
      * @return String列表
      */
@@ -96,7 +101,7 @@ public class GameConverter {
             return Collections.emptyList();
         }
         List<String> list = JSON.parseArray(json, String.class);
-        if(list == null) {
+        if (list == null) {
             return Collections.emptyList();
         }
         return list;
@@ -105,6 +110,7 @@ public class GameConverter {
     /**
      * 将ListString转换为JSON字符串
      * List为空时返回"[]"
+     *
      * @param list String列表
      * @return JSON字符串
      */

@@ -31,6 +31,7 @@ public class GameServiceImpl implements GameService {
 
     /**
      * 获取所有游戏信息（已启用）
+     *
      * @return 游戏列表
      */
     @Override
@@ -84,6 +85,7 @@ public class GameServiceImpl implements GameService {
 
     /**
      * 创建新桌游
+     *
      * @return 创建的桌游Id
      */
     @Override

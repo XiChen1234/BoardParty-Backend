@@ -7,6 +7,7 @@ import com.xichen.Entity.VO.PunishmentVO;
 public class PunishmentConverter {
     /**
      * DO转换为DTO
+     *
      * @param punishment 数据对象
      * @return DTO对象
      */
@@ -22,6 +23,7 @@ public class PunishmentConverter {
 
     /**
      * DTO转换为VO
+     *
      * @param punishmentDTO 数据传输对象
      * @return 视图对象
      */

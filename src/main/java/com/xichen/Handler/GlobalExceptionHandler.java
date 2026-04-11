@@ -18,6 +18,7 @@ public class GlobalExceptionHandler {
 
     /**
      * 自定义异常处理器
+     *
      * @param e 捕获的自定义异常
      * @return 响应对象
      */
@@ -31,7 +32,8 @@ public class GlobalExceptionHandler {
 
     /**
      * 默认异常处理器，处理所有未捕获的异常，兜底
-     * @param e 捕获的异常
+     *
+     * @param e       捕获的异常
      * @param request 请求对象
      * @return 响应对象
      */

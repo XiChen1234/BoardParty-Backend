@@ -26,22 +26,4 @@ public class HelloController {
     public List<Game> get() {
         return gameMapper.selectList(new QueryWrapper<>());
     }
-
-    @PostMapping("/test/")
-    public String post() {
-        Game game = new Game();
-        game.setGroupId(1L);
-        game.setName("test");
-        game.setIcon("https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png");
-        game.setDescription("test");
-        game.setMinPlayer(1);
-        game.setMaxPlayer(1);
-        game.setDuration(30);
-        game.setImages("[\"https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png\"]");
-        game.setStar(1);
-        game.setEnabled(true);
-
-        gameMapper.insert(game);
-        return "POST";
-    }
 }

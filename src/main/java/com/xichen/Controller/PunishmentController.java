@@ -21,7 +21,7 @@ public class PunishmentController {
     public CommonResponse<PunishmentVO> getRandomWeightPunishment() {
         PunishmentDTO punishmentDTO = punishmentService.getRandomWeightPunishment();
         if (punishmentDTO == null) {
-            return CommonResponse.fail(ResponseCode.ERROR,"没有查找到对应的惩罚信息");
+            return CommonResponse.fail(ResponseCode.ERROR, "没有查找到对应的惩罚信息");
         }
         PunishmentVO punishmentVO = PunishmentConverter.convertToVO(punishmentDTO);
         return CommonResponse.success(punishmentVO);
