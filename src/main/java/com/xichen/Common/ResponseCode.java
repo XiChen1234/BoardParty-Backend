@@ -13,10 +13,10 @@ public enum ResponseCode {
     INFO_EXIST(1402, "信息已存在"),
     ;
 
-    private final int code;
+    private final Integer code;
     private final String message;
 
-    ResponseCode(int code, String message) {
+    ResponseCode(Integer code, String message) {
         this.code = code;
         this.message = message;
     }
