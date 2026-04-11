@@ -7,4 +7,4 @@ spring:
 
 file:
   upload-path: /home/deploy/images/board-party
-  image-prefix: https://${DOMAIN_NAME}/board-party
+  image-prefix: https://${DOMAIN_NAME}/board-party/
