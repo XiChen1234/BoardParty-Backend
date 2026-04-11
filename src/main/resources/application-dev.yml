@@ -7,4 +7,4 @@ spring:
 
 file:
   upload-path: C:/Document/Project/BoardProject/BoardParty-Images/board-party
-  image-prefix: http://localhost:8080/board-party
+  image-prefix: http://localhost:8080/board-party/
