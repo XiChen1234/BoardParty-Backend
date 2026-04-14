@@ -5,15 +5,15 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+/**
+ * 玩家参与对局的游戏记录
+ */
 @Data
-@TableName("punishment")
-public class Punishment {
+@TableName("game_record_player")
+public class GameRecordPlayer {
     @TableId(type = IdType.AUTO)
     private Long id;
-    private Long groupId; // 0表示所有小圈公用
-    private String name;
-    private String content;
-    private String image;
-    private Integer weight;
-    private Boolean enabled;
+    private Long recordId;
+    private Long userId;
+    private Boolean isWin;
 }

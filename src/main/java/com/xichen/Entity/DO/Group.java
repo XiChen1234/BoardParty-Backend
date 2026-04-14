@@ -5,15 +5,18 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
+/**
+ * 小圈实体类
+ */
 @Data
-@TableName("punishment")
-public class Punishment {
+@TableName("group")
+public class Group {
     @TableId(type = IdType.AUTO)
     private Long id;
-    private Long groupId; // 0表示所有小圈公用
     private String name;
-    private String content;
-    private String image;
-    private Integer weight;
-    private Boolean enabled;
+    private String avatarUrl;
+    private Long creatorId;
+    private LocalDateTime creatTime;
 }

@@ -17,7 +17,7 @@ public class Game {
     private Integer minPlayer;
     private Integer maxPlayer;
     private Integer duration;
-    private String images;
+    private String images; // json
     private Integer star;
     private Boolean enabled;
 }
