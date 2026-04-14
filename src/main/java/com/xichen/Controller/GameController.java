@@ -32,6 +32,19 @@ public class GameController {
     }
 
     /**
+     * 根据ID获取桌游信息
+     *
+     * @param id 桌游ID
+     * @return 桌游信息
+     */
+    @GetMapping("/{id}")
+    public CommonResponse<GameVO> getGameById(@PathVariable Long id) {
+        GameQueryDTO gameQueryDTO = gameService.getGameById(id);
+        GameVO gameVO = GameConverter.convertToVO(gameQueryDTO);
+        return CommonResponse.success(gameVO);
+    }
+
+    /**
      * 创建一个新桌游
      *
      * @param request 创建桌游请求

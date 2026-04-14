@@ -11,6 +11,7 @@ public enum ResponseCode {
 
     VALIDATION_FAILED(1401, "参数验证失败"),
     INFO_EXIST(1402, "信息已存在"),
+    INFO_NOT_FOUND(1404, "信息未找到"),
     ;
 
     private final Integer code;

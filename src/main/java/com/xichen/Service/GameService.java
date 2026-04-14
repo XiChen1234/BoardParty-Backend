@@ -8,5 +8,7 @@ import java.util.List;
 public interface GameService {
     List<GameQueryDTO> getAllGames();
 
+    GameQueryDTO getGameById(Long id);
+
     Long createGame(GameCreateRequest request);
 }

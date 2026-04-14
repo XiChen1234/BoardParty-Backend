@@ -84,6 +84,21 @@ public class GameServiceImpl implements GameService {
     }
 
     /**
+     * 根据Id获取游戏信息
+     *
+     * @param id 游戏Id
+     * @return 游戏信息
+     */
+    @Override
+    public GameQueryDTO getGameById(Long id) {
+        Game game = gameMapper.selectById(id);
+        if (game != null) {
+            return GameConverter.convertToDTO(game);
+        }
+        throw new CommonException(ResponseCode.INFO_NOT_FOUND, "桌游信息不存在");
+    }
+
+    /**
      * 创建新桌游
      *
      * @return 创建的桌游Id
