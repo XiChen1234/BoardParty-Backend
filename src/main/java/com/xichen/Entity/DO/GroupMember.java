@@ -20,4 +20,6 @@ public class GroupMember {
     private Long userId;
     private Role role;
     private LocalDateTime joinTime;
+    private LocalDateTime updateTime;
+    private Boolean isDeleted;
 }

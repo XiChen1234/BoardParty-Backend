@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @TableName("game")
 public class Game {
@@ -20,4 +22,6 @@ public class Game {
     private String images; // json
     private Integer star;
     private Boolean enabled;
+    private LocalDateTime updateTime;
+    private Boolean isDeleted;
 }

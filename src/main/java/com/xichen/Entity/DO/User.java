@@ -24,4 +24,6 @@ public class User {
     private Gender gender;
     private String remark;
     private LocalDateTime registerTime;
+    private LocalDateTime updateTime;
+    private Boolean isDeleted;
 }

@@ -19,5 +19,7 @@ public class GameRecord {
     private Long gameId;
     private Integer playerCount;
     private String remark;
+    private LocalDateTime updateTime;
     private LocalDateTime createdTime;
+    private Boolean isDeleted;
 }

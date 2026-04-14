@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @TableName("punishment")
 public class Punishment {
@@ -16,4 +18,6 @@ public class Punishment {
     private String image;
     private Integer weight;
     private Boolean enabled;
+    private LocalDateTime updatedTime;
+    private Boolean deleted;
 }
