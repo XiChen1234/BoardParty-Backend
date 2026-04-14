@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  * 小圈成员表
  */
 @Data
-@TableName("group_member")
+@TableName("circle_member")
 public class GroupMember {
     @TableId(type = IdType.AUTO)
     private Long id;

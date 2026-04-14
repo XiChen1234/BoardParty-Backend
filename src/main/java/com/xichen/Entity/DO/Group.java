@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
  * 小圈实体类
  */
 @Data
-@TableName("group")
+@TableName("circle")
 public class Group {
     @TableId(type = IdType.AUTO)
     private Long id;
