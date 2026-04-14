@@ -4,7 +4,8 @@ import com.xichen.Common.CommonResponse;
 import com.xichen.Entity.Converter.GameConverter;
 import com.xichen.Entity.DTO.GameQueryDTO;
 import com.xichen.Entity.Request.GameCreateRequest;
-import com.xichen.Entity.VO.GameVO;
+import com.xichen.Entity.VO.GameDetailVO;
+import com.xichen.Entity.VO.GameListItemVO;
 import com.xichen.Service.GameService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
@@ -23,12 +24,12 @@ public class GameController {
      * @return 桌游列表
      */
     @GetMapping("")
-    public CommonResponse<List<GameVO>> getAllGames() {
+    public CommonResponse<List<GameListItemVO>> getAllGames() {
         List<GameQueryDTO> gameQueryDTOList = gameService.getAllGames();
-        List<GameVO> gameVOList = gameQueryDTOList.stream()
-                .map(GameConverter::convertToVO)
+        List<GameListItemVO> gameListItemVOList = gameQueryDTOList.stream()
+                .map(GameConverter::convertToListItemVO)
                 .toList();
-        return CommonResponse.success(gameVOList);
+        return CommonResponse.success(gameListItemVOList);
     }
 
     /**
@@ -38,10 +39,10 @@ public class GameController {
      * @return 桌游信息
      */
     @GetMapping("/{id}")
-    public CommonResponse<GameVO> getGameById(@PathVariable Long id) {
+    public CommonResponse<GameDetailVO> getGameById(@PathVariable Long id) {
         GameQueryDTO gameQueryDTO = gameService.getGameById(id);
-        GameVO gameVO = GameConverter.convertToVO(gameQueryDTO);
-        return CommonResponse.success(gameVO);
+        GameDetailVO gameDetailVO = GameConverter.convertToDetailVO(gameQueryDTO);
+        return CommonResponse.success(gameDetailVO);
     }
 
     /**

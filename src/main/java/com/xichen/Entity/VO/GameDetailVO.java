@@ -5,8 +5,11 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * 桌游详情视图对象
+ */
 @Data
-public class GameVO {
+public class GameDetailVO {
     private Long id;
     private String name;
     private String icon;
