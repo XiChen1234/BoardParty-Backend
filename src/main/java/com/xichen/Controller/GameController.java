@@ -8,6 +8,7 @@ import com.xichen.Entity.VO.GameDetailVO;
 import com.xichen.Entity.VO.GameListItemVO;
 import com.xichen.Service.GameService;
 import jakarta.annotation.Resource;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -52,7 +53,7 @@ public class GameController {
      * @return 创建的新桌游ID
      */
     @PostMapping("")
-    public CommonResponse<Long> createGame(@RequestBody GameCreateRequest request) {
+    public CommonResponse<Long> createGame(@RequestBody @Validated GameCreateRequest request) {
         Long gameId = gameService.createGame(request);
         return CommonResponse.success(gameId);
     }

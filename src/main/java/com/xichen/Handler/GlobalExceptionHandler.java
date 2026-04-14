@@ -6,8 +6,12 @@ import com.xichen.Exception.CommonException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.stream.Collectors;
 
 /**
  * 全局异常处理器
@@ -28,6 +32,22 @@ public class GlobalExceptionHandler {
             return CommonResponse.fail(e.getCode(), e.getMessage());
         }
         return CommonResponse.fail(e.getCode());
+    }
+
+    /**
+     * 参数验证失败处理器
+     *
+     * @param e 捕获的参数验证失败异常
+     * @return 响应对象
+     */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public CommonResponse<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        String error = e.getBindingResult().getAllErrors().stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(Collectors.joining("; "));
+        log.warn("参数验证失败: {}", error);
+
+        return CommonResponse.fail(ResponseCode.VALIDATION_FAILED, "参数错误");
     }
 
     /**
