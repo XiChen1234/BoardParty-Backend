@@ -17,3 +17,6 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: ""
+
+jwt:
+  secret: ${JWT_SECRET:veryveryveryveryveryveryverysecurekey} # 示例密钥

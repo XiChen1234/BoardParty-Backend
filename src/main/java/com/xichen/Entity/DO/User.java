@@ -26,4 +26,5 @@ public class User {
     private LocalDateTime registerTime;
     private LocalDateTime updateTime;
     private Boolean isDeleted;
+    private Boolean isAdmin;
 }

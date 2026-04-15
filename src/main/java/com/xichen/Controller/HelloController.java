@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.xichen.Entity.DO.Game;
 import com.xichen.Mapper.GameMapper;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -18,8 +18,9 @@ public class HelloController {
 
     // 映射根路径请求
     @GetMapping("/")
-    public String hello() {
-        return "Hello World!";
+    public String hello(HttpServletRequest request) {
+        Object userId = request.getAttribute("uid");
+        return "Hello World!" + userId;
     }
 
     @GetMapping("/test/")
