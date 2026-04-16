@@ -9,10 +9,13 @@ import com.xichen.Mapper.UserMapper;
 import com.xichen.Security.JwtUtil;
 import com.xichen.Service.AuthService;
 import jakarta.annotation.Resource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthServiceImpl implements AuthService {
+    private static final Logger log = LoggerFactory.getLogger(AuthServiceImpl.class);
     @Resource
     private UserMapper userMapper;
     @Resource
@@ -32,10 +35,12 @@ public class AuthServiceImpl implements AuthService {
         User user = userMapper.selectOne(queryWrapper);
 
         if (user == null) {
-            throw new CommonException(ResponseCode.USER_NOT_FOUND, "用户不存在");
+            log.warn("用户不存在: {}", username);
+            throw new CommonException(ResponseCode.USER_NOT_FOUND, "用户名或密码错误");
         }
         if (!user.getPassword().equals(password)) {
-            throw new CommonException(ResponseCode.PASSWORD_ERROR, "密码错误");
+            log.warn("用户密码错误: {}", username);
+            throw new CommonException(ResponseCode.PASSWORD_ERROR, "用户名或密码错误");
         }
 
         String token = jwtUtil.generateToken(user.getId(), user.getUsername());
