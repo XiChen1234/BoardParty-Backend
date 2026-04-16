@@ -3,7 +3,6 @@ package com.xichen.Service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.xichen.Common.ResponseCode;
 import com.xichen.Entity.DO.User;
-import com.xichen.Entity.VO.LoginVO;
 import com.xichen.Exception.CommonException;
 import com.xichen.Mapper.UserMapper;
 import com.xichen.Security.JwtUtil;
@@ -23,12 +22,13 @@ public class AuthServiceImpl implements AuthService {
 
     /**
      * 登录
+     *
      * @param username 用户名（账号）
      * @param password 密码
      * @return 用户视图对象
      */
     @Override
-    public LoginVO login(String username, String password) {
+    public String login(String username, String password) {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(User::getUsername, username)
                 .eq(User::getDeleted, false);
@@ -43,17 +43,6 @@ public class AuthServiceImpl implements AuthService {
             throw new CommonException(ResponseCode.PASSWORD_ERROR, "用户名或密码错误");
         }
 
-        String token = jwtUtil.generateToken(user.getId(), user.getUsername());
-
-        LoginVO loginVO = new LoginVO();
-        loginVO.setUserId(user.getId());
-        loginVO.setUsername(user.getUsername());
-        loginVO.setNickname(user.getNickname());
-        loginVO.setAvatarUrl(user.getAvatarUrl());
-        loginVO.setGender(user.getGender());
-        loginVO.setIsAdmin(user.getAdmin());
-        loginVO.setToken(token);
-
-        return loginVO;
+        return jwtUtil.generateToken(user.getId(), user.getUsername());
     }
 }

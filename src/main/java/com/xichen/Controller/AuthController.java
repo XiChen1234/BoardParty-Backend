@@ -3,7 +3,6 @@ package com.xichen.Controller;
 import com.xichen.Annotation.IgnoreAuth;
 import com.xichen.Common.CommonResponse;
 import com.xichen.Entity.Request.LoginRequest;
-import com.xichen.Entity.VO.LoginVO;
 import com.xichen.Service.AuthService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,11 +21,11 @@ public class AuthController {
 
     @IgnoreAuth
     @PostMapping("/login")
-    public CommonResponse<LoginVO> login(@RequestBody LoginRequest request) {
-        LoginVO loginVO = authService.login(
+    public CommonResponse<String> login(@RequestBody LoginRequest request) {
+        String token = authService.login(
                 request.getUsername(),
                 request.getPassword()
         );
-        return CommonResponse.success(loginVO);
+        return CommonResponse.success(token);
     }
 }
