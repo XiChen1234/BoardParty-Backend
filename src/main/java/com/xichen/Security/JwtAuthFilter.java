@@ -5,6 +5,7 @@ import com.xichen.Annotation.IgnoreAuth;
 import com.xichen.Common.CommonResponse;
 import com.xichen.Common.ResponseCode;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.annotation.Resource;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -44,9 +45,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         String token = extractToken(request);
-        // 需要token，但没有token，返回401
+        // 需要token，但没有token，说明未登录，返回401+通用响应报错
         if (token == null) {
-            writeResponse(response, "未登录");
+            writeResponse(response, ResponseCode.AUTH_NOT_LOGIN);
             return;
         }
 
@@ -56,8 +57,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             String username = claims.getSubject();
             request.setAttribute("uid", uid);
             request.setAttribute("username", username);
+        } catch (ExpiredJwtException e) {
+            // token已过期
+            writeResponse(response, ResponseCode.AUTH_TOKEN_EXPIRED);
+            return;
         } catch (Exception e) {
-            writeResponse(response, "token验证失败");
+            // 其他异常（签名错误、格式错误等）
+            writeResponse(response, ResponseCode.AUTH_FAILED);
             return;
         }
 
@@ -79,10 +85,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         return header.substring(7);
     }
 
-    private void writeResponse(HttpServletResponse response, String message) throws IOException {
+    private void writeResponse(HttpServletResponse response, ResponseCode code) throws IOException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json;charset=UTF-8");
-        CommonResponse<?> commonResponse = CommonResponse.fail(ResponseCode.UNAUTHORIZED, message);
+        CommonResponse<?> commonResponse = CommonResponse.fail(code);
         String json = JSON.toJSONString(commonResponse);
         response.getWriter().write(json);
     }

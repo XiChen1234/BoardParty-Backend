@@ -32,10 +32,10 @@ public class AuthServiceImpl implements AuthService {
         User user = userMapper.selectOne(queryWrapper);
 
         if (user == null) {
-            throw new CommonException(ResponseCode.LOGIN_FAILED, "用户不存在");
+            throw new CommonException(ResponseCode.USER_NOT_FOUND, "用户不存在");
         }
         if (!user.getPassword().equals(password)) {
-            throw new CommonException(ResponseCode.LOGIN_FAILED, "密码错误");
+            throw new CommonException(ResponseCode.PASSWORD_ERROR, "密码错误");
         }
 
         String token = jwtUtil.generateToken(user.getId(), user.getUsername());

@@ -95,7 +95,7 @@ public class GameServiceImpl implements GameService {
         if (game != null) {
             return GameConverter.convertToDTO(game);
         }
-        throw new CommonException(ResponseCode.INFO_NOT_FOUND, "桌游信息不存在");
+        throw new CommonException(ResponseCode.GAME_NOT_FOUND);
     }
 
     /**
@@ -110,7 +110,7 @@ public class GameServiceImpl implements GameService {
         LambdaQueryWrapper<Game> gameWrapper = new LambdaQueryWrapper<>();
         gameWrapper.eq(Game::getName, request.getName());
         if (gameMapper.selectOne(gameWrapper) != null) {
-            throw new CommonException(ResponseCode.INFO_EXIST, "桌游名称已存在");
+            throw new CommonException(ResponseCode.GAME_ALREADY_EXIST);
         }
 
         // 2. 创建桌游

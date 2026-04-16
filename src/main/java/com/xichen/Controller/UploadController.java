@@ -35,22 +35,22 @@ public class UploadController {
     public CommonResponse<String> uploadImage(@RequestParam("file") MultipartFile file) {
         // 1. 文件校验检查
         if (file == null || file.isEmpty()) {
-            return CommonResponse.fail(ResponseCode.FAIL, "无法上传空文件");
+            return CommonResponse.fail(ResponseCode.FILE_UPLOAD_FAILED, "无法上传空文件");
         }
         String contentType = file.getContentType();
         if (contentType == null || !contentType.startsWith("image/")) {
-            return CommonResponse.fail(ResponseCode.FAIL, "无法上传非图片文件");
+            return CommonResponse.fail(ResponseCode.FILE_UPLOAD_FAILED, "无法上传非图片文件");
         }
         String filename = file.getOriginalFilename();
         String extension = "";
         if (filename != null) {
             int dotIndex = filename.lastIndexOf('.');
             if (dotIndex <= 0) {
-                return CommonResponse.fail(ResponseCode.FAIL, "无法上传非图片文件");
+                return CommonResponse.fail(ResponseCode.FILE_UPLOAD_FAILED, "无法上传非图片文件");
             }
             extension = filename.toLowerCase().substring(dotIndex);
             if (!EXTENSION_SET.contains(extension)) {
-                return CommonResponse.fail(ResponseCode.FAIL, "无法上传非图片文件");
+                return CommonResponse.fail(ResponseCode.FILE_UPLOAD_FAILED, "无法上传非图片文件");
             }
         }
 
@@ -62,7 +62,7 @@ public class UploadController {
         if (!uploadDir.exists()) {
             boolean isCreated = uploadDir.mkdirs();
             if (!isCreated) {
-                return CommonResponse.fail(ResponseCode.ERROR, "无法创建上传目录");
+                return CommonResponse.fail(ResponseCode.SYSTEM_ERROR, "无法创建上传目录");
             }
         }
 
@@ -71,7 +71,7 @@ public class UploadController {
         try {
             file.transferTo(destFile);
         } catch (Exception e) {
-            return CommonResponse.fail(ResponseCode.ERROR, "文件上传失败");
+            return CommonResponse.fail(ResponseCode.SYSTEM_ERROR, "文件上传失败");
         }
 
         String returnFilePath = PREFIX + newFilename;

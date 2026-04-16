@@ -20,8 +20,9 @@ public class PunishmentController {
     @GetMapping("/random-weight")
     public CommonResponse<PunishmentVO> getRandomWeightPunishment() {
         PunishmentDTO punishmentDTO = punishmentService.getRandomWeightPunishment();
+        // TODO: 后期需要把这个放到业务层面进行处理
         if (punishmentDTO == null) {
-            return CommonResponse.fail(ResponseCode.ERROR, "没有查找到对应的惩罚信息");
+            return CommonResponse.fail(ResponseCode.RESOURCE_NOT_FOUND, "没有查找到对应的惩罚信息");
         }
         PunishmentVO punishmentVO = PunishmentConverter.convertToVO(punishmentDTO);
         return CommonResponse.success(punishmentVO);

@@ -47,7 +47,7 @@ public class GlobalExceptionHandler {
                 .collect(Collectors.joining("; "));
         log.warn("参数验证失败: {}", error);
 
-        return CommonResponse.fail(ResponseCode.VALIDATION_FAILED, "参数错误");
+        return CommonResponse.fail(ResponseCode.PARAM_ERROR, "表单参数错误");
     }
 
     /**
@@ -64,6 +64,6 @@ public class GlobalExceptionHandler {
                 e.getClass().getName(),
                 e.getMessage(),
                 e);
-        return CommonResponse.fail(ResponseCode.ERROR);
+        return CommonResponse.fail(ResponseCode.SYSTEM_ERROR);
     }
 }
