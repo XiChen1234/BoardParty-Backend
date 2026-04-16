@@ -3,8 +3,8 @@ package com.xichen.Entity.Converter;
 import com.xichen.Entity.DO.Game;
 import com.xichen.Entity.DTO.GameQueryDTO;
 import com.xichen.Entity.Request.GameCreateRequest;
-import com.xichen.Entity.VO.GameDetailVO;
-import com.xichen.Entity.VO.GameListItemVO;
+import com.xichen.Entity.Response.GameDetailResponse;
+import com.xichen.Entity.Response.GameListItemResponse;
 
 import com.alibaba.fastjson2.JSON;
 
@@ -46,41 +46,41 @@ public class GameConverter {
      * @param gameQueryDTO 数据传输对象
      * @return 视图对象
      */
-    public static GameListItemVO convertToListItemVO(GameQueryDTO gameQueryDTO) {
+    public static GameListItemResponse convertToListItemVO(GameQueryDTO gameQueryDTO) {
         if (gameQueryDTO == null) {
             return null;
         }
 
-        GameListItemVO gameListItemVO = new GameListItemVO();
-        gameListItemVO.setId(gameQueryDTO.getId());
-        gameListItemVO.setName(gameQueryDTO.getName());
-        gameListItemVO.setIcon(gameQueryDTO.getIcon());
-        gameListItemVO.setTags(gameQueryDTO.getTags());
-        gameListItemVO.setDescription(gameQueryDTO.getDescription());
-        gameListItemVO.setMinPlayer(gameQueryDTO.getMinPlayer());
-        gameListItemVO.setMaxPlayer(gameQueryDTO.getMaxPlayer());
-        gameListItemVO.setDuration(gameQueryDTO.getDuration());
-        gameListItemVO.setStar(gameQueryDTO.getStar());
-        return gameListItemVO;
+        GameListItemResponse gameListItemResponse = new GameListItemResponse();
+        gameListItemResponse.setId(gameQueryDTO.getId());
+        gameListItemResponse.setName(gameQueryDTO.getName());
+        gameListItemResponse.setIcon(gameQueryDTO.getIcon());
+        gameListItemResponse.setTags(gameQueryDTO.getTags());
+        gameListItemResponse.setDescription(gameQueryDTO.getDescription());
+        gameListItemResponse.setMinPlayer(gameQueryDTO.getMinPlayer());
+        gameListItemResponse.setMaxPlayer(gameQueryDTO.getMaxPlayer());
+        gameListItemResponse.setDuration(gameQueryDTO.getDuration());
+        gameListItemResponse.setStar(gameQueryDTO.getStar());
+        return gameListItemResponse;
     }
 
-    public static GameDetailVO convertToDetailVO(GameQueryDTO gameQueryDTO) {
+    public static GameDetailResponse convertToDetailVO(GameQueryDTO gameQueryDTO) {
         if(gameQueryDTO == null) {
             return null;
         }
 
-        GameDetailVO gameDetailVO = new GameDetailVO();
-        gameDetailVO.setId(gameQueryDTO.getId());
-        gameDetailVO.setName(gameQueryDTO.getName());
-        gameDetailVO.setIcon(gameQueryDTO.getIcon());
-        gameDetailVO.setTags(gameQueryDTO.getTags());
-        gameDetailVO.setDescription(gameQueryDTO.getDescription());
-        gameDetailVO.setMinPlayer(gameQueryDTO.getMinPlayer());
-        gameDetailVO.setMaxPlayer(gameQueryDTO.getMaxPlayer());
-        gameDetailVO.setDuration(gameQueryDTO.getDuration());
-        gameDetailVO.setStar(gameQueryDTO.getStar());
-        gameDetailVO.setImages(gameQueryDTO.getImages());
-        return gameDetailVO;
+        GameDetailResponse response = new GameDetailResponse();
+        response.setId(gameQueryDTO.getId());
+        response.setName(gameQueryDTO.getName());
+        response.setIcon(gameQueryDTO.getIcon());
+        response.setTags(gameQueryDTO.getTags());
+        response.setDescription(gameQueryDTO.getDescription());
+        response.setMinPlayer(gameQueryDTO.getMinPlayer());
+        response.setMaxPlayer(gameQueryDTO.getMaxPlayer());
+        response.setDuration(gameQueryDTO.getDuration());
+        response.setStar(gameQueryDTO.getStar());
+        response.setImages(gameQueryDTO.getImages());
+        return response;
     }
 
     /**

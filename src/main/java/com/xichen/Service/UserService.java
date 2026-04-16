@@ -1,6 +1,6 @@
 package com.xichen.Service;
 
-import com.xichen.Entity.VO.UserVO;
+import com.xichen.Entity.Response.UserResponse;
 
 /**
  * 用户模块业务层
@@ -11,5 +11,5 @@ public interface UserService {
      * @param id 用户Id
      * @return 用户信息
      */
-    UserVO getUserInfo(Long id);
+    UserResponse getUserInfo(Long id);
 }

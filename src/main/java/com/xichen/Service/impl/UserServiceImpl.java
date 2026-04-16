@@ -3,7 +3,7 @@ package com.xichen.Service.impl;
 import com.xichen.Common.ResponseCode;
 import com.xichen.Entity.Converter.UserConverter;
 import com.xichen.Entity.DO.User;
-import com.xichen.Entity.VO.UserVO;
+import com.xichen.Entity.Response.UserResponse;
 import com.xichen.Exception.CommonException;
 import com.xichen.Mapper.UserMapper;
 import com.xichen.Service.UserService;
@@ -16,7 +16,7 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public UserVO getUserInfo(Long id) {
+    public UserResponse getUserInfo(Long id) {
         User user = userMapper.selectById(id);
         if (user == null) {
             throw new CommonException(ResponseCode.USER_NOT_FOUND);

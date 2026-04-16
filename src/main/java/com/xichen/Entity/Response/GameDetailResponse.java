@@ -1,4 +1,4 @@
-package com.xichen.Entity.VO;
+package com.xichen.Entity.Response;
 
 import com.xichen.Entity.DO.Tag;
 import lombok.Data;
@@ -9,7 +9,7 @@ import java.util.List;
  * 桌游详情视图对象
  */
 @Data
-public class GameDetailVO {
+public class GameDetailResponse {
     private Long id;
     private String name;
     private String icon;

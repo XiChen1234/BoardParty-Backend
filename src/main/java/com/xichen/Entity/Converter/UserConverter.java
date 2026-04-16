@@ -1,7 +1,7 @@
 package com.xichen.Entity.Converter;
 
 import com.xichen.Entity.DO.User;
-import com.xichen.Entity.VO.UserVO;
+import com.xichen.Entity.Response.UserResponse;
 
 /**
  * 用户对象转换器
@@ -13,14 +13,14 @@ public class UserConverter {
      * @param user 数据对象
      * @return VO对象
      */
-    public static UserVO convertToVO(User user) {
-        UserVO userVO = new UserVO();
-        userVO.setId(user.getId());
-        userVO.setUsername(user.getUsername());
-        userVO.setNickname(user.getNickname());
-        userVO.setAvatarUrl(user.getAvatarUrl());
-        userVO.setGender(user.getGender());
-        userVO.setRegisterTime(user.getRegisterTime());
-        return userVO;
+    public static UserResponse convertToVO(User user) {
+        UserResponse userResponse = new UserResponse();
+        userResponse.setId(user.getId());
+        userResponse.setUsername(user.getUsername());
+        userResponse.setNickname(user.getNickname());
+        userResponse.setAvatarUrl(user.getAvatarUrl());
+        userResponse.setGender(user.getGender());
+        userResponse.setRegisterTime(user.getRegisterTime());
+        return userResponse;
     }
 }

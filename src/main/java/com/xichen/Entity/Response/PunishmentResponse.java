@@ -1,9 +1,9 @@
-package com.xichen.Entity.VO;
+package com.xichen.Entity.Response;
 
 import lombok.Data;
 
 @Data
-public class PunishmentVO {
+public class PunishmentResponse {
     private Long id;
     private String name;
     private String content;

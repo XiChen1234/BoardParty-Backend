@@ -2,7 +2,7 @@ package com.xichen.Entity.Converter;
 
 import com.xichen.Entity.DO.Punishment;
 import com.xichen.Entity.DTO.PunishmentDTO;
-import com.xichen.Entity.VO.PunishmentVO;
+import com.xichen.Entity.Response.PunishmentResponse;
 
 public class PunishmentConverter {
     /**
@@ -27,13 +27,13 @@ public class PunishmentConverter {
      * @param punishmentDTO 数据传输对象
      * @return 视图对象
      */
-    public static PunishmentVO convertToVO(PunishmentDTO punishmentDTO) {
-        PunishmentVO punishmentVO = new PunishmentVO();
-        punishmentVO.setId(punishmentDTO.getId());
-        punishmentVO.setName(punishmentDTO.getName());
-        punishmentVO.setContent(punishmentDTO.getContent());
-        punishmentVO.setImage(punishmentDTO.getImage());
+    public static PunishmentResponse convertToVO(PunishmentDTO punishmentDTO) {
+        PunishmentResponse punishmentResponse = new PunishmentResponse();
+        punishmentResponse.setId(punishmentDTO.getId());
+        punishmentResponse.setName(punishmentDTO.getName());
+        punishmentResponse.setContent(punishmentDTO.getContent());
+        punishmentResponse.setImage(punishmentDTO.getImage());
 
-        return punishmentVO;
+        return punishmentResponse;
     }
 }
