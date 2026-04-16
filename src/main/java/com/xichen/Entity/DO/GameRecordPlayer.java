@@ -17,5 +17,5 @@ public class GameRecordPlayer {
     private Long id;
     private Long recordId;
     private Long userId;
-    private Boolean isWin;
+    private Boolean win;
 }

@@ -28,7 +28,7 @@ public class AuthServiceImpl implements AuthService {
     public LoginVO login(String username, String password) {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(User::getUsername, username)
-                .eq(User::getIsDeleted, false);
+                .eq(User::getDeleted, false);
         User user = userMapper.selectOne(queryWrapper);
 
         if (user == null) {
@@ -46,7 +46,7 @@ public class AuthServiceImpl implements AuthService {
         loginVO.setNickname(user.getNickname());
         loginVO.setAvatarUrl(user.getAvatarUrl());
         loginVO.setGender(user.getGender());
-        loginVO.setIsAdmin(user.getIsAdmin());
+        loginVO.setIsAdmin(user.getAdmin());
         loginVO.setToken(token);
 
         return loginVO;

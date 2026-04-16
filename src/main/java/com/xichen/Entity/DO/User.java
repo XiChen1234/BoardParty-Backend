@@ -25,6 +25,6 @@ public class User {
     private String remark;
     private LocalDateTime registerTime;
     private LocalDateTime updateTime;
-    private Boolean isDeleted;
-    private Boolean isAdmin;
+    private Boolean deleted;
+    private Boolean admin;
 }

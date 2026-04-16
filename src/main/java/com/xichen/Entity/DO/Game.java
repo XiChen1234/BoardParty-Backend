@@ -23,5 +23,5 @@ public class Game {
     private Integer star;
     private Boolean enabled;
     private LocalDateTime updateTime;
-    private Boolean isDeleted;
+    private Boolean deleted;
 }

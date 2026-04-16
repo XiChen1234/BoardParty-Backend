@@ -21,5 +21,5 @@ public class GameRecord {
     private String remark;
     private LocalDateTime updateTime;
     private LocalDateTime createdTime;
-    private Boolean isDeleted;
+    private Boolean deleted;
 }

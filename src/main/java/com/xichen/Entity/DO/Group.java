@@ -20,5 +20,5 @@ public class Group {
     private Long creatorId;
     private LocalDateTime updateTime;
     private LocalDateTime creatTime;
-    private Boolean isDeleted;
+    private Boolean deleted;
 }

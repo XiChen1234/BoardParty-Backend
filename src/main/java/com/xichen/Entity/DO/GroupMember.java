@@ -21,5 +21,5 @@ public class GroupMember {
     private Role role;
     private LocalDateTime joinTime;
     private LocalDateTime updateTime;
-    private Boolean isDeleted;
+    private Boolean deleted;
 }
