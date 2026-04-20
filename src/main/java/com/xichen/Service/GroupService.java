@@ -44,7 +44,7 @@ public class GroupService {
             throw new CommonException(ResponseCode.GROUP_ALREADY_EXIST);
         }
 
-        Group group = GroupConverter.convertVOToDTO(request); // TODO: VO To DO
+        Group group = GroupConverter.convertVOToDO(request);
         if (!StringUtils.hasText(group.getAvatarUrl())) {
             group.setAvatarUrl(DEFAULT_AVATAR_URL);
         }

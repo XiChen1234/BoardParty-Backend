@@ -13,7 +13,7 @@ public class GroupConverter {
      * @param request 小圈创建请求
      * @return 小圈DO
      */
-    public static Group convertVOToDTO(GroupCreateRequest request) {
+    public static Group convertVOToDO(GroupCreateRequest request) {
         if (request == null) {
             return null;
         }
