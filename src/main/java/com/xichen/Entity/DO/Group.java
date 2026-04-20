@@ -17,6 +17,7 @@ public class Group {
     private Long id;
     private String name;
     private String avatarUrl;
+    private String description;
     private Long creatorId;
     private LocalDateTime updateTime;
     private LocalDateTime creatTime;

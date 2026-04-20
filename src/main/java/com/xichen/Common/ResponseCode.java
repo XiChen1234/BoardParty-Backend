@@ -40,7 +40,7 @@ public enum ResponseCode {
      * 小圈模块 4000-4999
      */
     GROUP_NOT_FOUND(4001, "小圈不存在"),
-    GROUP_ALREADY_EXIST(4002, "小圈已存在"),
+    GROUP_ALREADY_EXIST(4002, "小圈名称已存在"),
     GROUP_PERMISSION_DENIED(4003, "没有小圈权限"),
     GROUP_MEMBER_ALREADY_EXIST(4004, "已加入该小圈"),
     GROUP_MEMBER_NOT_FOUND(4005, "不是该小圈成员"),
