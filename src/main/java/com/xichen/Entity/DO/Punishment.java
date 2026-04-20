@@ -15,9 +15,8 @@ public class Punishment {
     private Long groupId; // 0表示所有小圈公用
     private String name;
     private String content;
-    private String image;
-    private Integer weight;
+    private String icon;
     private Boolean enabled;
-    private LocalDateTime updatedTime;
+    private LocalDateTime updateTime;
     private Boolean deleted;
 }

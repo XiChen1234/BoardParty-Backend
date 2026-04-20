@@ -1,6 +1,6 @@
 package com.xichen.Service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.xichen.Entity.Converter.PunishmentConverter;
 import com.xichen.Entity.DO.Punishment;
 import com.xichen.Entity.DTO.PunishmentDTO;
@@ -10,6 +10,7 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class PunishmentServiceImpl implements PunishmentService {
@@ -17,28 +18,52 @@ public class PunishmentServiceImpl implements PunishmentService {
     private PunishmentMapper punishmentMapper;
 
     @Override
-    public PunishmentDTO getRandomWeightPunishment() {
-        List<Punishment> punishmentList = punishmentMapper.selectList(new QueryWrapper<>());
+    public PunishmentDTO getPublicPunishment() {
+        LambdaQueryWrapper<Punishment> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Punishment::getGroupId, 0)
+                .eq(Punishment::getEnabled, true)
+                .eq(Punishment::getDeleted, false);
+        List<Punishment> punishmentList = punishmentMapper.selectList(queryWrapper);
+
+        // 没有匹配数据，则返回null，由前端自行生成默认数据
         if (punishmentList == null || punishmentList.isEmpty()) {
-            // 没有惩罚，null是报错
             return null;
         }
 
-        // 根据全部权重进行随机
-        int totalWeight = punishmentList.stream()
-                .mapToInt(Punishment::getWeight)
-                .sum();
-        int randomWeight = (int) (Math.random() * totalWeight);
+        // 从列表中随机获取
+        Random random = new Random();
+        int index = random.nextInt(punishmentList.size());
+        Punishment punishment = punishmentList.get(index);
+        return PunishmentConverter.doToDTO(punishment);
+    }
 
-        int currentWeight = 0;
+    /**
+     * 小圈用户随机抽取惩罚
+     *
+     * @param groupId 小圈id
+     * @return 惩罚信息
+     */
+    @Override
+    public PunishmentDTO getPunishmentByGroupId(Long groupId) {
+        LambdaQueryWrapper<Punishment> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.and(wrapper ->
+                        wrapper.eq(Punishment::getGroupId, groupId)
+                                .or()
+                                .eq(Punishment::getGroupId, 0)
+                )
+                .eq(Punishment::getEnabled, true)
+                .eq(Punishment::getDeleted, false);
+        List<Punishment> punishmentList = punishmentMapper.selectList(queryWrapper);
 
-        for (Punishment punishment : punishmentList) {
-            currentWeight += punishment.getWeight();
-            if (randomWeight < currentWeight) {
-                return PunishmentConverter.convertToDTO(punishment);
-            }
+        // 没有匹配数据，则返回null，由前端自行生成默认数据
+        if (punishmentList == null || punishmentList.isEmpty()) {
+            return null;
         }
 
-        return null;
+        // 从列表中随机获取
+        Random random = new Random();
+        int index = random.nextInt(punishmentList.size());
+        Punishment punishment = punishmentList.get(index);
+        return PunishmentConverter.doToDTO(punishment);
     }
 }

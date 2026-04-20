@@ -6,34 +6,38 @@ import com.xichen.Entity.Response.PunishmentResponse;
 
 public class PunishmentConverter {
     /**
-     * DO转换为DTO
-     *
-     * @param punishment 数据对象
-     * @return DTO对象
+     * 惩罚DO转化成DTO
+     * @param punishment 惩罚数据对象
+     * @return 惩罚数据传输对象
      */
-    public static PunishmentDTO convertToDTO(Punishment punishment) {
+    public static PunishmentDTO doToDTO(Punishment punishment) {
+        if (punishment == null) {
+            return null;
+        }
+
         PunishmentDTO punishmentDTO = new PunishmentDTO();
         punishmentDTO.setId(punishment.getId());
         punishmentDTO.setName(punishment.getName());
         punishmentDTO.setContent(punishment.getContent());
-        punishmentDTO.setImage(punishment.getImage());
-
+        punishmentDTO.setIcon(punishment.getIcon());
         return punishmentDTO;
     }
 
     /**
-     * DTO转换为VO
-     *
-     * @param punishmentDTO 数据传输对象
-     * @return 视图对象
+     * 惩罚DTO转化成VO
+     * @param punishmentDTO 惩罚数据传输对象
+     * @return 惩罚数据响应对象
      */
-    public static PunishmentResponse convertToVO(PunishmentDTO punishmentDTO) {
-        PunishmentResponse punishmentResponse = new PunishmentResponse();
-        punishmentResponse.setId(punishmentDTO.getId());
-        punishmentResponse.setName(punishmentDTO.getName());
-        punishmentResponse.setContent(punishmentDTO.getContent());
-        punishmentResponse.setImage(punishmentDTO.getImage());
+    public static PunishmentResponse dtoToVO(PunishmentDTO punishmentDTO) {
+        if (punishmentDTO == null) {
+            return null;
+        }
 
-        return punishmentResponse;
+        PunishmentResponse response = new PunishmentResponse();
+        response.setId(punishmentDTO.getId());
+        response.setName(punishmentDTO.getName());
+        response.setContent(punishmentDTO.getContent());
+        response.setIcon(punishmentDTO.getIcon());
+        return response;
     }
 }

@@ -7,5 +7,5 @@ public class PunishmentResponse {
     private Long id;
     private String name;
     private String content;
-    private String image;
+    private String icon;
 }
