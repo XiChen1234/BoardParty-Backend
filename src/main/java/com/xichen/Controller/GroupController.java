@@ -2,6 +2,7 @@ package com.xichen.Controller;
 
 import com.xichen.Common.CommonResponse;
 import com.xichen.Entity.Request.GroupCreateRequest;
+import com.xichen.Entity.Response.GroupListItemResponse;
 import com.xichen.Service.GroupService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,19 +21,6 @@ public class GroupController {
     private GroupService groupService;
 
     /**
-     * 获取用户加入的小圈
-     *
-     * @param request 请求，用于提取用户ID
-     * @return 小圈列表
-     */
-    @GetMapping("/user/me")
-    public CommonResponse<List<String>> getGroupsUserSelf(HttpServletRequest request) {
-        Long uid = (Long) request.getAttribute("uid");
-
-        return null;
-    }
-
-    /**
      * 创建新的小圈
      *
      * @param request       请求，用于提取用户ID
@@ -47,6 +35,19 @@ public class GroupController {
         createRequest.setCreatorId(uid);
         Long groupId = groupService.createGroup(createRequest);
         return CommonResponse.success(groupId);
+    }
+
+    /**
+     * 获取用户加入的小圈
+     *
+     * @param request 请求，用于提取用户ID
+     * @return 小圈列表
+     */
+    @GetMapping("/user/me")
+    public CommonResponse<List<GroupListItemResponse>> getGroupsUserSelf(HttpServletRequest request) {
+        Long uid = (Long) request.getAttribute("uid");
+        List<GroupListItemResponse> list = groupService.getGroupsUserSelf(uid);
+        return CommonResponse.success(list);
     }
 
     /**
