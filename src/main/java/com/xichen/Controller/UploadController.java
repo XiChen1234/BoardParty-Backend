@@ -10,7 +10,7 @@ import java.io.File;
 import java.util.*;
 
 /**
- * 文件上传控制类
+ * 文件上传模块
  */
 @RestController
 @RequestMapping("/upload")

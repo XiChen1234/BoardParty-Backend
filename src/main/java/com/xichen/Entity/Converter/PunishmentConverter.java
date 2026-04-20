@@ -4,6 +4,9 @@ import com.xichen.Entity.DO.Punishment;
 import com.xichen.Entity.DTO.PunishmentDTO;
 import com.xichen.Entity.Response.PunishmentResponse;
 
+/**
+ * 惩罚对象转化器
+ */
 public class PunishmentConverter {
     /**
      * 惩罚DO转化成DTO

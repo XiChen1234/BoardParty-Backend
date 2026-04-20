@@ -5,6 +5,9 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * 桌游列表，单项视图对象
+ */
 @Data
 public class GameListItemResponse {
     private Long id;

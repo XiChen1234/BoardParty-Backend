@@ -2,11 +2,9 @@ package com.xichen.Controller;
 
 import com.xichen.Common.CommonResponse;
 import com.xichen.Entity.Response.UserResponse;
-import com.xichen.Security.JwtUtil;
 import com.xichen.Service.UserService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     @Resource
     private UserService userService;
-    @Resource
-    private JwtUtil jwtUtil;
 
     @GetMapping("/{id}")
     public CommonResponse<UserResponse> getUser(@PathVariable Long id) {

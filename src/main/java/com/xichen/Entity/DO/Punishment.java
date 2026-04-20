@@ -7,6 +7,9 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
+/**
+ * 惩罚数据对象
+ */
 @Data
 @TableName("punishment")
 public class Punishment {

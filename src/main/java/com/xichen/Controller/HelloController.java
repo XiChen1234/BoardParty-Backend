@@ -8,9 +8,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
-// REST 控制器注解
+/**
+ * 测试模块
+ */
 @RestController
 public class HelloController {
     @Resource
@@ -21,10 +21,5 @@ public class HelloController {
     public String hello(HttpServletRequest request) {
         Object userId = request.getAttribute("uid");
         return "Hello World!" + userId;
-    }
-
-    @GetMapping("/test/")
-    public List<Game> get() {
-        return gameMapper.selectList(new QueryWrapper<>());
     }
 }

@@ -7,6 +7,9 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
+/**
+ * 桌游
+ */
 @Data
 @TableName("game")
 public class Game {

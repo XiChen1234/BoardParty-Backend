@@ -11,6 +11,9 @@ import com.alibaba.fastjson2.JSON;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * 桌游对象转化器
+ */
 public class GameConverter {
     /**
      * DO转换为DTO

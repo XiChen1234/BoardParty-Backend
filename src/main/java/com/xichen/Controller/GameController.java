@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * 桌游管理模块
+ */
 @RestController
 @RequestMapping("/games")
 public class GameController {

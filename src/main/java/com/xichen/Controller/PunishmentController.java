@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 惩罚抽取模块
+ */
 @RestController
 @RequestMapping("/punishments")
 public class PunishmentController {

@@ -8,7 +8,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 /**
- * 小圈实体类
+ * 小圈实体类，数据库无法存group，故存circle
  */
 @Data
 @TableName("circle")
