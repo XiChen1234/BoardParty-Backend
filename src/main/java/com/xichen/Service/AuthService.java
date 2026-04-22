@@ -6,9 +6,11 @@ import com.xichen.Entity.DO.User;
 import com.xichen.Exception.CommonException;
 import com.xichen.Mapper.UserMapper;
 import com.xichen.Security.JwtUtil;
+import com.xichen.Security.PasswordUtil;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,6 +20,8 @@ public class AuthService {
     private UserMapper userMapper;
     @Resource
     private JwtUtil jwtUtil;
+    @Resource
+    private PasswordEncoder passwordEncoder;
 
     /**
      * 登录
@@ -36,7 +40,7 @@ public class AuthService {
             log.warn("用户不存在: {}", username);
             throw new CommonException(ResponseCode.USER_NOT_FOUND, "用户名或密码错误");
         }
-        if (!user.getPassword().equals(password)) {
+        if (!PasswordUtil.checkPassword(password, user.getPassword(), passwordEncoder)) {
             log.warn("用户密码错误: {}", username);
             throw new CommonException(ResponseCode.PASSWORD_ERROR, "用户名或密码错误");
         }
