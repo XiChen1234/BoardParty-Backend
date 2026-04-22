@@ -4,17 +4,19 @@ import com.xichen.Entity.Enum.Role;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
- * 小圈列表，单项视图对象
+ * 小圈详情响应
  */
 @Data
-public class GroupListItemResponse {
+public class GroupDetailResponse {
     private Long id;
     private String name;
     private String avatarUrl;
     private String description;
     private Integer memberCount;
-    private Role userRole; // 当前角色代码，0-创建者，1-管理员，2-普通玩家
+    private List<MemberGroupResponse> memberList;
+    private Role userRole;
     private LocalDateTime joinTime;
 }

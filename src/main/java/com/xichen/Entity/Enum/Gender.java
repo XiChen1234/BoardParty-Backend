@@ -1,6 +1,7 @@
 package com.xichen.Entity.Enum;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -17,4 +18,9 @@ public enum Gender {
     @EnumValue
     private final Integer code;
     private final String gender;
+
+    @JsonValue
+    public Integer getCode() {
+        return code;
+    }
 }

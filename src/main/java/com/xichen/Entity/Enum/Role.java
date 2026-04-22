@@ -1,6 +1,7 @@
 package com.xichen.Entity.Enum;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -17,4 +18,9 @@ public enum Role {
     @EnumValue
     private final int code;
     private final String name;
+
+    @JsonValue
+    public int getCode() {
+        return code;
+    }
 }

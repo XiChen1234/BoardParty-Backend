@@ -1,6 +1,7 @@
 package com.xichen.Entity.Converter;
 
 import com.xichen.Entity.DO.User;
+import com.xichen.Entity.DTO.UserQueryDTO;
 import com.xichen.Entity.Response.UserResponse;
 
 /**
@@ -22,5 +23,21 @@ public class UserConverter {
         userResponse.setGender(user.getGender());
         userResponse.setRegisterTime(user.getRegisterTime());
         return userResponse;
+    }
+
+    public static UserQueryDTO convertDOToDTO(User user) {
+        if (user == null) {
+            return null;
+        }
+        UserQueryDTO userQueryDTO = new UserQueryDTO();
+        userQueryDTO.setId(user.getId());
+        userQueryDTO.setUsername(user.getUsername());
+        userQueryDTO.setNickname(user.getNickname());
+        userQueryDTO.setAvatarUrl(user.getAvatarUrl());
+        userQueryDTO.setGender(user.getGender());
+        userQueryDTO.setRegisterTime(user.getRegisterTime());
+        userQueryDTO.setUpdateTime(user.getUpdateTime());
+
+        return userQueryDTO;
     }
 }

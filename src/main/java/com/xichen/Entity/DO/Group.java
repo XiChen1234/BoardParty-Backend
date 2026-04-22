@@ -19,7 +19,8 @@ public class Group {
     private String avatarUrl;
     private String description;
     private Long creatorId;
+    private Integer memberCount;
     private LocalDateTime updateTime;
-    private LocalDateTime creatTime;
+    private LocalDateTime createTime;
     private Boolean deleted;
 }
