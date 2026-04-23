@@ -10,8 +10,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.stream.Collectors;
-
 /**
  * 全局异常处理器
  */
@@ -43,9 +41,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public CommonResponse<?> handleValidationException(MethodArgumentNotValidException e) {
         log.error("参数验证失败：", e);
-        String error = e.getBindingResult().getAllErrors().stream()
+        String error = e.getBindingResult().getFieldErrors().stream()
+                .findFirst() // 只取第一个
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                .collect(Collectors.joining("; "));
+                .orElse("参数校验失败"); // 兜底提示
 
         return CommonResponse.fail(ResponseCode.VALIDATION_ERROR, error);
     }
