@@ -9,15 +9,14 @@ import lombok.Getter;
 @Getter
 public class CommonException extends RuntimeException {
     private final ResponseCode code;
-    private final String message;
 
-    public CommonException(ResponseCode code) {
-        this.code = code;
-        this.message = code.getMessage();
+    public CommonException(ResponseCode responseCode) {
+        super(responseCode.getMessage());
+        this.code = responseCode;
     }
 
-    public CommonException(ResponseCode code, String message) {
-        this.code = code;
-        this.message = message;
+    public CommonException(ResponseCode responseCode, String message) {
+        super(message);
+        this.code = responseCode;
     }
 }

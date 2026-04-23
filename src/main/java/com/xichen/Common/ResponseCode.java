@@ -6,18 +6,19 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum ResponseCode {
-    SUCCESS(0, "成功"),
+    SUCCESS(0, "成功"), // 1
 
     /**
      * 系统通用 1000-1999
      */
     SYSTEM_ERROR(1000, "系统错误"),
     PARAM_ERROR(1001, "参数错误"),
-    AUTH_NOT_LOGIN(1002, "未登录"),
-    AUTH_TOKEN_EXPIRED(1003, "认证已过期"),
-    AUTH_FAILED(1004, "权限验证失败"),
-    RESOURCE_NOT_FOUND(1005, "资源不存在"),
-    RESOURCE_ALREADY_EXIST(1006, "资源已存在"),
+    VALIDATION_ERROR(1002, "数据验证错误"),
+    AUTH_NOT_LOGIN(1003, "未登录"),
+    AUTH_TOKEN_EXPIRED(1004, "认证已过期"),
+    AUTH_FAILED(1005, "权限验证失败"),
+    RESOURCE_NOT_FOUND(1006, "资源不存在"),
+    RESOURCE_ALREADY_EXIST(1007, "资源已存在"),
 
     /**
      * 文件上传模块 2000-2999

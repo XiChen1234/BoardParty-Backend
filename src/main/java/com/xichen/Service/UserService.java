@@ -57,6 +57,7 @@ public class UserService {
     public List<UserQueryDTO> getUserInfoList(List<Long> idList) {
         List<User> users = userMapper.selectByIds(idList);
         if (users.size() != idList.size()) {
+            // 查询数量和参数数量不一致，报错
             throw new CommonException(ResponseCode.USER_NOT_FOUND);
         }
         List<UserQueryDTO> userQueryDTOS = new ArrayList<>();

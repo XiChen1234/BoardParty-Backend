@@ -48,9 +48,10 @@ public class GroupService {
     @Transactional
     public Long createGroup(GroupCreateRequest request) {
         LambdaQueryWrapper<Group> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Group::getName, request.getName());
+        queryWrapper.eq(Group::getName, request.getName())
+                .eq(Group::getDeleted, false);
         if (groupMapper.selectCount(queryWrapper) > 0) {
-            // 小圈名称已经存在
+            // 小圈名称已经存在，小圈名称需要唯一
             throw new CommonException(ResponseCode.GROUP_ALREADY_EXIST);
         }
 
