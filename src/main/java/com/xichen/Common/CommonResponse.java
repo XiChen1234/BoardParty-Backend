@@ -13,16 +13,6 @@ public class CommonResponse<T> {
     private T data;
 
     /**
-     * 无数据的创建成功响应
-     *
-     * @param <T> 响应的数据类型
-     * @return 响应对象
-     */
-    public static <T> CommonResponse<T> success() {
-        return new CommonResponse<>(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessage(), null);
-    }
-
-    /**
      * 携带数据的创建成功响应
      *
      * @param data 携带的数据
@@ -30,7 +20,11 @@ public class CommonResponse<T> {
      * @return 响应对象
      */
     public static <T> CommonResponse<T> success(T data) {
-        return new CommonResponse<>(ResponseCode.SUCCESS.getCode(), null, data);
+        return new CommonResponse<>(
+                ResponseCode.SUCCESS.getCode(),
+                ResponseCode.SUCCESS.getMessage(),
+                data
+        );
     }
 
     /**
