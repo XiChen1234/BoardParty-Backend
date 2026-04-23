@@ -42,7 +42,7 @@ public class AuthService {
         }
         if (!PasswordUtil.checkPassword(password, user.getPassword(), passwordEncoder)) {
             log.warn("用户密码错误: {}", username);
-            throw new CommonException(ResponseCode.PASSWORD_ERROR, "用户名或密码错误");
+            throw new CommonException(ResponseCode.PASSWORD_ERROR);
         }
 
         return jwtUtil.generateToken(user.getId(), user.getUsername());

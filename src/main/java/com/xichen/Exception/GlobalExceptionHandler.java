@@ -47,7 +47,7 @@ public class GlobalExceptionHandler {
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(Collectors.joining("; "));
 
-        return CommonResponse.fail(ResponseCode.PARAM_ERROR, error);
+        return CommonResponse.fail(ResponseCode.VALIDATION_ERROR, error);
     }
 
     /**
