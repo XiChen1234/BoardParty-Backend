@@ -16,6 +16,8 @@ public class PunishmentService {
     @Resource
     private PunishmentMapper punishmentMapper;
 
+    private static final Random RANDOM = new Random();
+
     public PunishmentDTO getPublicPunishment() {
         LambdaQueryWrapper<Punishment> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Punishment::getGroupId, 0)
@@ -29,8 +31,7 @@ public class PunishmentService {
         }
 
         // 从列表中随机获取
-        Random random = new Random();
-        int index = random.nextInt(punishmentList.size());
+        int index = RANDOM.nextInt(punishmentList.size());
         Punishment punishment = punishmentList.get(index);
         return PunishmentConverter.doToDTO(punishment);
     }
@@ -58,8 +59,7 @@ public class PunishmentService {
         }
 
         // 从列表中随机获取
-        Random random = new Random();
-        int index = random.nextInt(punishmentList.size());
+        int index = RANDOM.nextInt(punishmentList.size());
         Punishment punishment = punishmentList.get(index);
         return PunishmentConverter.doToDTO(punishment);
     }
