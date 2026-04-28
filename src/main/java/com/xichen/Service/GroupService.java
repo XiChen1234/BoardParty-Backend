@@ -62,6 +62,8 @@ public class GroupService {
         if (!StringUtils.hasText(group.getDescription())) {
             group.setDescription(DEFAULT_DESCRIPTION);
         }
+        group.setMemberCount(1);
+        group.setDeleted(false);
         groupMapper.insert(group);
         Long groupId = group.getId();
 
