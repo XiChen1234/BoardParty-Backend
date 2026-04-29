@@ -1,6 +1,7 @@
 package com.xichen.Service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.xichen.Common.ResponseCode;
 import com.xichen.Entity.Converter.GroupConverter;
 import com.xichen.Entity.DO.Group;
@@ -286,5 +287,100 @@ public class GroupService {
 
         // 6. 查询小圈信息
         return getGroupDetail(uid, request.getId());
+    }
+
+    /**
+     * 管理员/用户退出小圈
+     *
+     * @param uid      用户id
+     * @param groupId 小圈id
+     */
+    @Transactional
+    public void quitGroup(Long uid, Long groupId) {
+        // 1. 检查小圈是否存在
+        LambdaQueryWrapper<Group> groupQuery = new LambdaQueryWrapper<>();
+        groupQuery.eq(Group::getId, groupId).eq(Group::getDeleted, false);
+        Group group = groupMapper.selectOne(groupQuery);
+        if (group == null) {
+            throw new CommonException(ResponseCode.GROUP_NOT_FOUND);
+        }
+
+        // 2. 检查用户权限
+        LambdaQueryWrapper<GroupMember> memberQuery = new LambdaQueryWrapper<>();
+        memberQuery.eq(GroupMember::getUserId, uid)
+                .eq(GroupMember::getGroupId, groupId)
+                .eq(GroupMember::getDeleted, false);
+        GroupMember member = groupMemberMapper.selectOne(memberQuery);
+        if (member == null) {
+            throw new CommonException(ResponseCode.GROUP_PERMISSION_DENIED);
+        }
+        if (member.getRole() == Role.CREATOR) {
+            throw new CommonException(ResponseCode.GROUP_PERMISSION_DENIED, "权限错误：创建者无法执行退出小圈操作");
+        }
+
+        // 3. 执行用户删除member记录（逻辑删除）
+        member.setDeleted(true);
+        int rows = groupMemberMapper.updateById(member);
+        if (rows == 0) {
+            throw new CommonException(ResponseCode.GROUP_OPERATION_ERROR);
+        }
+        // 4. 更新小圈的memberCount
+        group.setMemberCount(group.getMemberCount() - 1);
+        rows = groupMapper.updateById(group);
+        if (rows == 0) {
+            throw new CommonException(ResponseCode.GROUP_OPERATION_ERROR);
+        }
+    }
+
+
+    /**
+     * 创建者解散小圈
+     * TODO: 删除小圈的桌游信息、游戏记录信息等
+     *
+     * @param uid 用户id
+     * @param groupId 小圈id
+     */
+    @Transactional
+    public void dissolveGroup(Long uid, Long groupId) {
+        // 1. 检查小圈是否存在
+        LambdaQueryWrapper<Group> groupQuery = new LambdaQueryWrapper<>();
+        groupQuery.eq(Group::getId, groupId).eq(Group::getDeleted, false);
+        Group group = groupMapper.selectOne(groupQuery);
+        if (group == null) {
+            throw new CommonException(ResponseCode.GROUP_NOT_FOUND);
+        }
+
+        // 2. 检查用户权限
+        LambdaQueryWrapper<GroupMember> memberQuery = new LambdaQueryWrapper<>();
+        memberQuery.eq(GroupMember::getUserId, uid)
+                .eq(GroupMember::getGroupId, groupId)
+                .eq(GroupMember::getDeleted, false);
+        GroupMember member = groupMemberMapper.selectOne(memberQuery);
+        if (member == null) {
+            throw new CommonException(ResponseCode.GROUP_PERMISSION_DENIED);
+        }
+        if (member.getRole() != Role.CREATOR) {
+            throw new CommonException(ResponseCode.GROUP_PERMISSION_DENIED, "只有创建者才能解散小圈");
+        }
+
+        // 3. 删除小圈
+        group.setDeleted(true);
+        group.setUpdateTime(LocalDateTime.now());
+        int rows = groupMapper.updateById(group);
+        if (rows == 0) {
+            throw new CommonException(ResponseCode.GROUP_OPERATION_ERROR);
+        }
+
+        // 4. 删除小圈的成员信息
+        LambdaUpdateWrapper<GroupMember> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.eq(GroupMember::getGroupId, groupId)
+                .eq(GroupMember::getDeleted, false)
+                .set(GroupMember::getDeleted, true)
+                .set(GroupMember::getUpdateTime, LocalDateTime.now());
+
+        rows = groupMemberMapper.update(null, updateWrapper);
+        if (rows == 0) {
+            throw new CommonException(ResponseCode.GROUP_OPERATION_ERROR);
+        }
     }
 }

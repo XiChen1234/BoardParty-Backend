@@ -76,11 +76,24 @@ public class GroupController {
 
     /**
      * 退出小圈
-     * 创建者退出则解散小圈，解散小圈同步删除成员、桌游在小圈中的相关信息
-     * 当然，是软删除
      */
-    @PostMapping("/quit")
-    public CommonResponse<String> quitGroup() {
+    @PostMapping("/{gid}/quit")
+    public CommonResponse<Void> quitGroup(HttpServletRequest request,
+                                            @PathVariable Long gid) {
+        Long uid = (Long) request.getAttribute("uid");
+        groupService.quitGroup(uid, gid);
+        return null;
+    }
+
+    /**
+     * 解散小圈
+     * TODO: 解散小圈同步删除成员、桌游在小圈中的相关信息
+     */
+    @PostMapping("/{gid}/dissolve")
+    public CommonResponse<Void> dissolveGroup(HttpServletRequest request,
+                                                @PathVariable Long gid) {
+        Long uid = (Long) request.getAttribute("uid");
+        groupService.dissolveGroup(uid, gid);
         return null;
     }
 
