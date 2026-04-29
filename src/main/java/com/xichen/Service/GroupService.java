@@ -9,6 +9,7 @@ import com.xichen.Entity.DTO.MemberGroupDTO;
 import com.xichen.Entity.DTO.UserQueryDTO;
 import com.xichen.Entity.Enum.Role;
 import com.xichen.Entity.Request.GroupCreateRequest;
+import com.xichen.Entity.Request.GroupEditRequest;
 import com.xichen.Entity.Response.GroupDetailResponse;
 import com.xichen.Entity.Response.GroupListItemResponse;
 import com.xichen.Entity.Response.MemberGroupResponse;
@@ -16,14 +17,13 @@ import com.xichen.Exception.CommonException;
 import com.xichen.Mapper.GroupMapper;
 import com.xichen.Mapper.GroupMemberMapper;
 import jakarta.annotation.Resource;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -211,5 +211,80 @@ public class GroupService {
         detail.setMemberList(memberResponses);
 
         return detail;
+    }
+
+    /**
+     * 编辑小圈
+     *
+     * @param uid      用户id
+     * @param request 请求参数
+     * @return 小圈详情
+     */
+    public GroupDetailResponse editGroup(Long uid, GroupEditRequest request) {
+        // 1. 小圈是否存在
+        LambdaQueryWrapper<Group> groupQuery = new LambdaQueryWrapper<>();
+        groupQuery.eq(Group::getId, request.getId()).eq(Group::getDeleted, false);
+        Group group = groupMapper.selectOne(groupQuery);
+        if (group == null) {
+            throw new CommonException(ResponseCode.GROUP_NOT_FOUND);
+        }
+
+        // 2. 用户权限检查
+        LambdaQueryWrapper<GroupMember> memberQuery = new LambdaQueryWrapper<>();
+        memberQuery.eq(GroupMember::getUserId, uid)
+                .eq(GroupMember::getGroupId, request.getId())
+                .eq(GroupMember::getDeleted, false);
+        GroupMember member = groupMemberMapper.selectOne(memberQuery);
+        if (member == null || member.getRole() == Role.PLAYER) {
+            throw new CommonException(ResponseCode.GROUP_PERMISSION_DENIED);
+        }
+
+        // 3. 更新后的小圈重名检查
+        if (request.getName() != null) {
+            String name = request.getName().trim();
+            if (name.isEmpty()) {
+                throw new CommonException(ResponseCode.PARAM_ERROR, "小圈名称不能为空白");
+            }
+
+            groupQuery = new LambdaQueryWrapper<>();
+            groupQuery.eq(Group::getName, request.getName())
+                    .ne(Group::getId, request.getId())
+                    .eq(Group::getDeleted, false);
+            Group sameNameGroup = groupMapper.selectOne(groupQuery);
+            // 重名的小圈，其他重名的小圈，id不一样，抛出错误
+            // 其他情况，1. 存在重名小圈，id一样，说明就是这个小圈，可以更新（在上面规避）
+            // 2. 不存在重名小圈，可以更新
+            if(sameNameGroup != null) {
+                throw new CommonException(ResponseCode.GROUP_ALREADY_EXIST);
+            }
+        }
+
+        // 4. 构建更新对象
+        Group newGroup = new Group();
+        newGroup.setId(request.getId());
+        if (request.getName() != null) {
+            newGroup.setName(request.getName());
+        }
+        if (request.getAvatarUrl() != null) {
+            newGroup.setAvatarUrl(request.getAvatarUrl());
+        }
+        if (request.getDescription() != null) {
+            newGroup.setDescription(request.getDescription());
+        }
+        newGroup.setUpdateTime(LocalDateTime.now());
+
+        // 5. 执行更新
+        try {
+            int rows = groupMapper.updateById(newGroup);
+            if (rows == 0) {
+                throw new CommonException(ResponseCode.GROUP_OPERATION_ERROR);
+            }
+        } catch (DuplicateKeyException e) {
+            // 并发错误
+            throw new CommonException(ResponseCode.GROUP_ALREADY_EXIST);
+        }
+
+        // 6. 查询小圈信息
+        return getGroupDetail(uid, request.getId());
     }
 }

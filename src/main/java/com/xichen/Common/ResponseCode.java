@@ -35,6 +35,7 @@ public enum ResponseCode {
     GROUP_NOT_FOUND(4001, "小圈不存在"),
     GROUP_ALREADY_EXIST(4002, "小圈名称已存在"),
     GROUP_PERMISSION_DENIED(4003, "没有小圈权限"),
+    GROUP_OPERATION_ERROR(4004, "小圈操作失败"),
 
     /**
      * 桌游模块 5000-5999

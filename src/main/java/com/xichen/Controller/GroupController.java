@@ -2,6 +2,7 @@ package com.xichen.Controller;
 
 import com.xichen.Common.CommonResponse;
 import com.xichen.Entity.Request.GroupCreateRequest;
+import com.xichen.Entity.Request.GroupEditRequest;
 import com.xichen.Entity.Response.GroupDetailResponse;
 import com.xichen.Entity.Response.GroupListItemResponse;
 import com.xichen.Service.GroupService;
@@ -87,7 +88,10 @@ public class GroupController {
      * 编辑小圈信息
      */
     @PostMapping("/edit")
-    public CommonResponse<String> editGroup() {
-        return null;
+    public CommonResponse<GroupDetailResponse> editGroup(HttpServletRequest request,
+                                                         @RequestBody @Validated GroupEditRequest editRequest) {
+        Long uid = (Long) request.getAttribute("uid");
+        GroupDetailResponse detail = groupService.editGroup(uid, editRequest);
+        return CommonResponse.success(detail);
     }
 }
