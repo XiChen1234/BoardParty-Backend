@@ -33,9 +33,7 @@ public class GroupController {
     public CommonResponse<Long> createGroup(
             HttpServletRequest request,
             @RequestBody @Validated GroupCreateRequest createRequest) {
-        Long uid = (Long) request.getAttribute("uid");
-        createRequest.setCreatorId(uid);
-        Long groupId = groupService.createGroup(createRequest);
+        Long groupId = groupService.createGroup(request, createRequest);
         return CommonResponse.success(groupId);
     }
 

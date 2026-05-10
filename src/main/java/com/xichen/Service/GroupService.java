@@ -8,6 +8,7 @@ import com.xichen.Entity.DO.Group;
 import com.xichen.Entity.DO.GroupMember;
 import com.xichen.Entity.DTO.MemberGroupDTO;
 import com.xichen.Entity.DTO.UserQueryDTO;
+import com.xichen.Entity.Enum.GroupStatus;
 import com.xichen.Entity.Enum.Role;
 import com.xichen.Entity.Request.GroupCreateRequest;
 import com.xichen.Entity.Request.GroupEditRequest;
@@ -18,6 +19,7 @@ import com.xichen.Exception.CommonException;
 import com.xichen.Mapper.GroupMapper;
 import com.xichen.Mapper.GroupMemberMapper;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,34 +46,41 @@ public class GroupService {
      * 创建小圈子
      *
      * @param request 请求参数
+     * @param createRequest 创建小圈子请求参数
      * @return 小圈子Id
      */
     @Transactional
-    public Long createGroup(GroupCreateRequest request) {
+    public Long createGroup(HttpServletRequest request, GroupCreateRequest createRequest) {
+        // 1. 检查小圈名称是否已经存在
         LambdaQueryWrapper<Group> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Group::getName, request.getName())
-                .eq(Group::getDeleted, false);
+        queryWrapper.eq(Group::getName, createRequest.getName())
+                .eq(Group::getStatus, GroupStatus.NORMAL) // 已解散的小圈名称可以重新创建
+                .eq(Group::getDeleted, false); // 删除的小圈名称可以重新创建
         if (groupMapper.selectCount(queryWrapper) > 0) {
             // 小圈名称已经存在，小圈名称需要唯一
             throw new CommonException(ResponseCode.GROUP_ALREADY_EXIST);
         }
 
-        Group group = GroupConverter.convertVOToDO(request);
+        // 2. 创建小圈
+        Group group = GroupConverter.convertVOToDO(createRequest);
+        Long uid = (Long) request.getAttribute("uid");
+        group.setCreatorId(uid); // 设置创建者id
         if (!StringUtils.hasText(group.getAvatarUrl())) {
-            group.setAvatarUrl(DEFAULT_AVATAR_URL);
+            group.setAvatarUrl(DEFAULT_AVATAR_URL); // 设置默认头像
         }
         if (!StringUtils.hasText(group.getDescription())) {
-            group.setDescription(DEFAULT_DESCRIPTION);
+            group.setDescription(DEFAULT_DESCRIPTION); // 添加默认描述
         }
         group.setMemberCount(1);
+        group.setStatus(GroupStatus.NORMAL);
         group.setDeleted(false);
         groupMapper.insert(group);
         Long groupId = group.getId();
 
-        // 创建者加入小圈
+        // 3. 创建者加入小圈
         GroupMember member = new GroupMember();
         member.setGroupId(groupId);
-        member.setUserId(group.getCreatorId());
+        member.setUserId(createRequest.getCreatorId());
         member.setRole(Role.CREATOR);
         groupMemberMapper.insert(member);
 
