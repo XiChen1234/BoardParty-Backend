@@ -45,12 +45,12 @@ public class GroupService {
     /**
      * 创建小圈子
      *
-     * @param request 请求参数
+     * @param uid 用户id
      * @param createRequest 创建小圈子请求参数
      * @return 小圈子Id
      */
     @Transactional
-    public Long createGroup(HttpServletRequest request, GroupCreateRequest createRequest) {
+    public Long createGroup(Long uid, GroupCreateRequest createRequest) {
         // 1. 检查小圈名称是否已经存在
         LambdaQueryWrapper<Group> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Group::getName, createRequest.getName())
@@ -62,7 +62,6 @@ public class GroupService {
 
         // 2. 创建小圈
         Group group = GroupConverter.convertVOToDO(createRequest);
-        Long uid = (Long) request.getAttribute("uid");
         group.setCreatorId(uid); // 设置创建者id
         if (!StringUtils.hasText(group.getAvatarUrl())) {
             group.setAvatarUrl(DEFAULT_AVATAR_URL); // 设置默认头像

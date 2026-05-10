@@ -25,27 +25,27 @@ public class GroupController {
     /**
      * 创建新的小圈
      *
-     * @param request       请求，用于提取用户ID
+     * @param uid       提取的用户ID
      * @param createRequest 小圈基本信息
      * @return 小圈id
      */
     @PostMapping("/create")
     public CommonResponse<Long> createGroup(
-            HttpServletRequest request,
+            @RequestAttribute("uid") Long uid,
             @RequestBody @Validated GroupCreateRequest createRequest) {
-        Long groupId = groupService.createGroup(request, createRequest);
+        Long groupId = groupService.createGroup(uid, createRequest);
         return CommonResponse.success(groupId);
     }
 
     /**
      * 获取用户加入的小圈
      *
-     * @param request 请求，用于提取用户ID
+     * @param uid 提取的用户ID
      * @return 小圈列表
      */
     @GetMapping("/me")
-    public CommonResponse<List<GroupListItemResponse>> getGroupsUserSelf(HttpServletRequest request) {
-        Long uid = (Long) request.getAttribute("uid");
+    public CommonResponse<List<GroupListItemResponse>> getGroupsUserSelf(
+            @RequestAttribute("uid") Long uid) {
         List<GroupListItemResponse> list = groupService.getGroupsUserSelf(uid);
         return CommonResponse.success(list);
     }
@@ -57,9 +57,8 @@ public class GroupController {
      */
     @GetMapping("/{id}")
     public CommonResponse<GroupDetailResponse> getGroupDetail(
-            HttpServletRequest request,
+            @RequestAttribute("uid") Long uid,
             @PathVariable Long id) {
-        Long uid = (Long) request.getAttribute("uid");
         GroupDetailResponse detail = groupService.getGroupDetail(uid, id);
         return CommonResponse.success(detail);
     }
@@ -76,9 +75,9 @@ public class GroupController {
      * 退出小圈
      */
     @PostMapping("/{gid}/quit")
-    public CommonResponse<Void> quitGroup(HttpServletRequest request,
-                                            @PathVariable Long gid) {
-        Long uid = (Long) request.getAttribute("uid");
+    public CommonResponse<Void> quitGroup(
+            @RequestAttribute("uid") Long uid,
+            @PathVariable Long gid) {
         groupService.quitGroup(uid, gid);
         return null;
     }
@@ -88,9 +87,9 @@ public class GroupController {
      * TODO: 解散小圈同步删除成员、桌游在小圈中的相关信息
      */
     @PostMapping("/{gid}/dissolve")
-    public CommonResponse<Void> dissolveGroup(HttpServletRequest request,
-                                                @PathVariable Long gid) {
-        Long uid = (Long) request.getAttribute("uid");
+    public CommonResponse<Void> dissolveGroup(
+            @RequestAttribute("uid") Long uid,
+            @PathVariable Long gid) {
         groupService.dissolveGroup(uid, gid);
         return null;
     }
@@ -99,9 +98,9 @@ public class GroupController {
      * 编辑小圈信息
      */
     @PostMapping("/edit")
-    public CommonResponse<GroupDetailResponse> editGroup(HttpServletRequest request,
-                                                         @RequestBody @Validated GroupEditRequest editRequest) {
-        Long uid = (Long) request.getAttribute("uid");
+    public CommonResponse<GroupDetailResponse> editGroup(
+            @RequestAttribute("uid") Long uid,
+            @RequestBody @Validated GroupEditRequest editRequest) {
         GroupDetailResponse detail = groupService.editGroup(uid, editRequest);
         return CommonResponse.success(detail);
     }

@@ -5,10 +5,7 @@ import com.xichen.Entity.Response.UserResponse;
 import com.xichen.Service.UserService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 用户模块
@@ -26,9 +23,8 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public CommonResponse<UserResponse> getUserSelf(HttpServletRequest request) {
-        // 获取token，从token中获取用户id
-        Long uid = (Long) request.getAttribute("uid");
+    public CommonResponse<UserResponse> getUserSelf(@RequestAttribute("uid") Long uid) {
+        // 从token中获取用户id
         UserResponse userResponse = userService.getUserInfo(uid);
         return CommonResponse.success(userResponse);
     }
