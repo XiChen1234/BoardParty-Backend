@@ -32,8 +32,7 @@ public class AuthService {
      */
     public String login(String username, String password) {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(User::getUsername, username)
-                .eq(User::getDeleted, false);
+        queryWrapper.eq(User::getUsername, username);
         User user = userMapper.selectOne(queryWrapper);
 
         if (user == null) {

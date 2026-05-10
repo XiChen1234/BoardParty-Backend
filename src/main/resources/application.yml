@@ -17,6 +17,11 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: ""
+  global-config:
+    db-config:
+      logic-delete-field: deleted # 逻辑删除字段名
+      logic-delete-value: true
+      logic-not-delete-value: false
 
 jwt:
   secret: ${JWT_SECRET:veryveryveryveryveryveryverysecurekey} # 示例密钥

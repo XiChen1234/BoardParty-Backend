@@ -21,8 +21,7 @@ public class PunishmentService {
     public PunishmentDTO getPublicPunishment() {
         LambdaQueryWrapper<Punishment> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Punishment::getGroupId, 0)
-                .eq(Punishment::getEnabled, true)
-                .eq(Punishment::getDeleted, false);
+                .eq(Punishment::getEnabled, true);
         List<Punishment> punishmentList = punishmentMapper.selectList(queryWrapper);
 
         // 没有匹配数据，则返回null，由前端自行生成默认数据
@@ -49,8 +48,7 @@ public class PunishmentService {
                                 .or()
                                 .eq(Punishment::getGroupId, 0)
                 )
-                .eq(Punishment::getEnabled, true)
-                .eq(Punishment::getDeleted, false);
+                .eq(Punishment::getEnabled, true);
         List<Punishment> punishmentList = punishmentMapper.selectList(queryWrapper);
 
         // 没有匹配数据，则返回null，由前端自行生成默认数据

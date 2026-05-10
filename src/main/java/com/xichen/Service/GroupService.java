@@ -54,8 +54,7 @@ public class GroupService {
         // 1. 检查小圈名称是否已经存在
         LambdaQueryWrapper<Group> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Group::getName, createRequest.getName())
-                .eq(Group::getStatus, GroupStatus.NORMAL) // 已解散的小圈名称可以重新创建
-                .eq(Group::getDeleted, false); // 删除的小圈名称可以重新创建
+                .eq(Group::getStatus, GroupStatus.NORMAL); // 已解散的小圈名称可以重新创建
         if (groupMapper.selectCount(queryWrapper) > 0) {
             // 小圈名称已经存在，小圈名称需要唯一
             throw new CommonException(ResponseCode.GROUP_ALREADY_EXIST);
@@ -97,7 +96,6 @@ public class GroupService {
         // 1. 查询用户加入的 groupMember
         LambdaQueryWrapper<GroupMember> memberQuery = new LambdaQueryWrapper<>();
         memberQuery.eq(GroupMember::getUserId, uid)
-                .eq(GroupMember::getDeleted, false)
                 .select(GroupMember::getGroupId,
                         GroupMember::getRole,
                         GroupMember::getJoinTime);
@@ -113,8 +111,7 @@ public class GroupService {
 
         // 3. 批量查询 group
         LambdaQueryWrapper<Group> groupQueryWrapper = new LambdaQueryWrapper<>();
-        groupQueryWrapper.in(Group::getId, groupIdList)
-                .eq(Group::getDeleted, false);
+        groupQueryWrapper.in(Group::getId, groupIdList);
         List<Group> groupList = groupMapper.selectList(groupQueryWrapper);
         Map<Long, Group> groupMap = groupList.stream()
                 .collect(Collectors.toMap(Group::getId, g -> g));
@@ -154,7 +151,6 @@ public class GroupService {
         LambdaQueryWrapper<GroupMember> memberSelfQuery = new LambdaQueryWrapper<>();
         memberSelfQuery.eq(GroupMember::getUserId, uid)
                 .eq(GroupMember::getGroupId, groupId)
-                .eq(GroupMember::getDeleted, false)
                 .select(GroupMember::getRole,
                         GroupMember::getJoinTime);
         GroupMember selfMember = groupMemberMapper.selectOne(memberSelfQuery);
@@ -164,8 +160,7 @@ public class GroupService {
 
         // 2. 查询 group
         LambdaQueryWrapper<Group> groupQuery = new LambdaQueryWrapper<>();
-        groupQuery.eq(Group::getId, groupId)
-                .eq(Group::getDeleted, false);
+        groupQuery.eq(Group::getId, groupId);
         Group group = groupMapper.selectOne(groupQuery);
         if (group == null) {
             throw new CommonException(ResponseCode.GROUP_NOT_FOUND);
@@ -174,7 +169,6 @@ public class GroupService {
         // 3. 查询 members
         LambdaQueryWrapper<GroupMember> memberListQuery = new LambdaQueryWrapper<>();
         memberListQuery.eq(GroupMember::getGroupId, groupId)
-                .eq(GroupMember::getDeleted, false)
                 .select(GroupMember::getUserId, GroupMember::getRole);
         List<GroupMember> members = groupMemberMapper.selectList(memberListQuery);
         List<Long> userIdList = members.stream()
@@ -233,7 +227,7 @@ public class GroupService {
     public GroupDetailResponse editGroup(Long uid, GroupEditRequest request) {
         // 1. 小圈是否存在
         LambdaQueryWrapper<Group> groupQuery = new LambdaQueryWrapper<>();
-        groupQuery.eq(Group::getId, request.getId()).eq(Group::getDeleted, false);
+        groupQuery.eq(Group::getId, request.getId());
         Group group = groupMapper.selectOne(groupQuery);
         if (group == null) {
             throw new CommonException(ResponseCode.GROUP_NOT_FOUND);
@@ -242,8 +236,7 @@ public class GroupService {
         // 2. 用户权限检查
         LambdaQueryWrapper<GroupMember> memberQuery = new LambdaQueryWrapper<>();
         memberQuery.eq(GroupMember::getUserId, uid)
-                .eq(GroupMember::getGroupId, request.getId())
-                .eq(GroupMember::getDeleted, false);
+                .eq(GroupMember::getGroupId, request.getId());
         GroupMember member = groupMemberMapper.selectOne(memberQuery);
         if (member == null || member.getRole() == Role.PLAYER) {
             throw new CommonException(ResponseCode.GROUP_PERMISSION_DENIED);
@@ -258,8 +251,7 @@ public class GroupService {
 
             groupQuery = new LambdaQueryWrapper<>();
             groupQuery.eq(Group::getName, request.getName())
-                    .ne(Group::getId, request.getId())
-                    .eq(Group::getDeleted, false);
+                    .ne(Group::getId, request.getId());
             Group sameNameGroup = groupMapper.selectOne(groupQuery);
             // 重名的小圈，其他重名的小圈，id不一样，抛出错误
             // 其他情况，1. 存在重名小圈，id一样，说明就是这个小圈，可以更新（在上面规避）
@@ -308,7 +300,7 @@ public class GroupService {
     public void quitGroup(Long uid, Long groupId) {
         // 1. 检查小圈是否存在
         LambdaQueryWrapper<Group> groupQuery = new LambdaQueryWrapper<>();
-        groupQuery.eq(Group::getId, groupId).eq(Group::getDeleted, false);
+        groupQuery.eq(Group::getId, groupId);
         Group group = groupMapper.selectOne(groupQuery);
         if (group == null) {
             throw new CommonException(ResponseCode.GROUP_NOT_FOUND);
@@ -317,8 +309,7 @@ public class GroupService {
         // 2. 检查用户权限
         LambdaQueryWrapper<GroupMember> memberQuery = new LambdaQueryWrapper<>();
         memberQuery.eq(GroupMember::getUserId, uid)
-                .eq(GroupMember::getGroupId, groupId)
-                .eq(GroupMember::getDeleted, false);
+                .eq(GroupMember::getGroupId, groupId);
         GroupMember member = groupMemberMapper.selectOne(memberQuery);
         if (member == null) {
             throw new CommonException(ResponseCode.GROUP_PERMISSION_DENIED);
@@ -353,7 +344,7 @@ public class GroupService {
     public void dissolveGroup(Long uid, Long groupId) {
         // 1. 检查小圈是否存在
         LambdaQueryWrapper<Group> groupQuery = new LambdaQueryWrapper<>();
-        groupQuery.eq(Group::getId, groupId).eq(Group::getDeleted, false);
+        groupQuery.eq(Group::getId, groupId);
         Group group = groupMapper.selectOne(groupQuery);
         if (group == null) {
             throw new CommonException(ResponseCode.GROUP_NOT_FOUND);
@@ -362,8 +353,7 @@ public class GroupService {
         // 2. 检查用户权限
         LambdaQueryWrapper<GroupMember> memberQuery = new LambdaQueryWrapper<>();
         memberQuery.eq(GroupMember::getUserId, uid)
-                .eq(GroupMember::getGroupId, groupId)
-                .eq(GroupMember::getDeleted, false);
+                .eq(GroupMember::getGroupId, groupId);
         GroupMember member = groupMemberMapper.selectOne(memberQuery);
         if (member == null) {
             throw new CommonException(ResponseCode.GROUP_PERMISSION_DENIED);
@@ -382,12 +372,8 @@ public class GroupService {
 
         // 4. 删除小圈的成员信息
         LambdaUpdateWrapper<GroupMember> updateWrapper = new LambdaUpdateWrapper<>();
-        updateWrapper.eq(GroupMember::getGroupId, groupId)
-                .eq(GroupMember::getDeleted, false)
-                .set(GroupMember::getDeleted, true)
-                .set(GroupMember::getUpdateTime, LocalDateTime.now());
-
-        rows = groupMemberMapper.update(null, updateWrapper);
+        updateWrapper.eq(GroupMember::getGroupId, groupId);
+        rows = groupMemberMapper.delete(updateWrapper);
         if (rows == 0) {
             throw new CommonException(ResponseCode.GROUP_OPERATION_ERROR);
         }
